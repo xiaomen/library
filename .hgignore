@@ -1,0 +1,4 @@
+syntax: glob
+
+venv
+permdir
