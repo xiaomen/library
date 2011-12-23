@@ -1,0 +1,47 @@
+$def with (book_list, next_page_input_list, is_end)
+
+$ keys = ['title', 'author', 'publisher', 'detail_url']
+$def tr(values):
+    <tr>
+        $for key in keys:
+            <td>
+            $if key == 'detail_url':
+                <a href='/QueryDetail?$values[key]'>详细信息</a>
+            $else:
+                $values.get(key)
+            </td>
+    </tr>
+
+$def book_table(rows):
+    <table>
+        <tr>
+            <th>题名</th>
+            <th>责任者</th>
+            <th>出版社</th>
+            <th>详细信息</th>
+        </tr>
+        $for row in rows:
+            $:row
+    </table><br/>
+        <span><a href='javascript:history.go(-1);'>前一页</a>&nbsp;&nbsp;&nbsp;<a href='javascript:nextpage()'>后一页</a></span>
+$def next_page_form(input_list):
+    <form method='post' name='nextpage' action="/Query">
+       $for input in input_list:
+           <input type='hidden' name='$input[0]' value='$input[1]' />
+    </form>
+<html>
+    <head>
+        <Title>书目信息</Title>
+    </head>
+    <body>
+        $:book_table([tr(row) for row in book_list])
+        $:next_page_form(next_page_input_list)
+    </body>
+    
+    <script language='javascript'>
+        function nextpage(){
+            $if is_end: 
+                document.nextpage.submit();
+        }
+    </script>
+</html>

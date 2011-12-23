@@ -1,0 +1,44 @@
+<html>
+    <META http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+    <title>图书查询</title>
+    <body>
+        <form method="post" action="/Query">
+            <input type="hidden" name="col1" value="marc" />
+            <input type="hidden" name="marcformat" value="all" />
+            <input type="hidden" name="booktype" value="all" />
+            <input type="hidden" name="raws" value="10" />
+            <input type="hidden" name="pageNo" value="1" />
+            <input type="hidden" name="cmdACT" value="list" />
+            <input type="hidden" name="xsl" value="BOOK_list.xsl" />
+            <input type="hidden" name="mod" value="oneXSL" />
+            <input type="hidden" name="columnID" value="1" />
+            <input type="hidden" name="searchSign" value="" />
+            <input type="hidden" name="libNUM" value="1" />
+            <input type="hidden" name="ISFASTSEARCH" value="true" />
+            <input type="hidden" name="matching" value="radiobutton" />
+            <input type="hidden" name="multiSelectLibcode" value="" />
+            <input type="hidden" name="orderSign" value="true" />
+            <input type="hidden" name="startPubdate" value="" />
+            <input type="hidden" name="endPubdate" value="" />
+
+            
+            <table>
+                <tr>
+                    <td>检索词:</td>
+                    <td>
+                    <input type="text" size="50" name="val1" />
+                    <input type="submit"  value="查询" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>排序选项：</td>
+                    <td>
+                    <select name="sortSign">
+                        <option value="score_sort">匹配度</option>
+                        <option value="pubdate_sort">出版日期</option>
+                        <option value="loannum_sort">借阅次数</option>
+                    </select>
+                    <input type="checkbox" name="hasholdingCheckbox" checked="yes" />只搜索有馆藏的书目
+        </form>
+    </body>
+</html>

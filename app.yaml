@@ -1,0 +1,8 @@
+application: library
+version: 1
+runtime: python
+debug: True 
+
+handlers:
+- url: /.*
+  wsgi_app: new_app:wsgi_app
