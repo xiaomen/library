@@ -14,6 +14,25 @@ session_attr = 'SESSION'
 
 url = 'http://deploy2.xiaom.co:8998/opac/websearch/bookSearch'
 
+html_escape_table = {
+    "&": "&amp;",
+    '"': "&quot;",
+    "'": "&apos;",
+    ">": "&gt;",
+    "<": "&lt;"
+    }
+
+def html_escape(text):
+    return "".join(html_escape_table.get(c, c) for c in text)
+
+def html_unescape(s):
+    s = s.replace("&lt;", "<")
+    s = s.replace("&gt;", ">")
+    s = s.replace("&apos;", "'")
+    s = s.replace("&quot;", "\"")
+    s = s.replace("&amp;", "&")
+    return s
+
 def get_value_from_xml_node(tree, path, default):
     node = tree.find(path)
     if node == None:

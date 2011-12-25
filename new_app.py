@@ -26,11 +26,12 @@ class Query:
         user_data['filter'] = self.calc_filter_value(user_data)
         user_data['bookType'] = self.calc_book_type_value(user_data)
         user_data['marcType'] = self.calc_marc_type_value(user_data)
+        user_data['val1'] = newhnulib.html_unescape(user_data['val1'])
         if user_data['marcformat'] != 'all':
             user_data['marcformat'] = 'radiobutton'
         query_result = newhnulib.new_search_book(user_data)
         return render_template('result.html', query_result=query_result, 
-                                              val1=user_data['val1'].decode('utf-8'),
+                                              val1=newhnulib.html_escape(user_data['val1'].decode('utf-8')),
                                               sortSign=user_data['sortSign'],
                                               hasholdingCheckbox=user_data['hasholdingCheckbox'])
 
