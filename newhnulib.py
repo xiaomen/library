@@ -12,7 +12,7 @@ book_attr = ['BOOKRECNO', 'AUTHOR', 'ISBN', 'PAGE', 'PRICE',
 navbar_attr = 'NAVBAR'
 session_attr = 'SESSION'
 
-url = 'http://opac.lib.hnu.cn/opac/websearch/bookSearch'
+url = 'http://deploy2.xiaom.co:8998/opac/websearch/bookSearch'
 
 def get_value_from_xml_node(tree, path, default):
     node = tree.find(path)
@@ -26,10 +26,9 @@ def get_book_list_from_xml(xml):
     book_query_result = {}
 
     book_query_result['book_list'] = []
-    book_query_result['CURPAGE'] = string.atoi(get_value_from_xml_node(tree, navbar_attr + '/CURPAGE', '0'))
+    book_query_result['CURPAGE'] = string.atoi(get_value_from_xml_node(tree, session_attr + '/CURPAGE', '0'))
     book_query_result['PAGEROWS'] = string.atoi(get_value_from_xml_node(tree, navbar_attr + '/PAGEROWS', '0'))
     book_query_result['TOTALROWS'] = string.atoi(get_value_from_xml_node(tree, navbar_attr + '/TOTALROWS', '0'))
-
     bookrows = tree.findall('ROW')
     if bookrows == None:
         book_query_result['has_result'] = False
