@@ -12,7 +12,7 @@ book_attr = ['BOOKRECNO', 'AUTHOR', 'ISBN', 'PAGE', 'PRICE',
 navbar_attr = 'NAVBAR'
 session_attr = 'SESSION'
 
-url = 'http://162.105.80.67:8999/opac/websearch/bookSearch'
+url = 'http://opac.lib.hnu.cn/opac/websearch/bookSearch'
 
 def get_value_from_xml_node(tree, path, default):
     node = tree.find(path)
