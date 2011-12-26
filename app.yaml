@@ -5,4 +5,4 @@ debug: True
 
 handlers:
 - url: /.*
-  wsgi_app: new_app:wsgi_app
+  wsgi_app: app:wsgi_app
