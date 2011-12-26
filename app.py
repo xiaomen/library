@@ -1,15 +1,16 @@
 # -*- coding: utf-8 -*-
-import web
-import hnulib
+
 import os
+import web
 from jinja2 import Environment, FileSystemLoader
+
+import hnulib
 
 urls = (
     '/Query', 'Query',
     '/QueryDetail', 'QueryDetail',
     '/.*', 'QueryPage',
 )
-
 
 def render_template(template_name, **context):
     extensions = context.pop('extensions', [])
@@ -20,7 +21,6 @@ def render_template(template_name, **context):
         extensions=extensions)
     jinja_env.globals.update(globals)
     return jinja_env.get_template(template_name).render(context)
-
 
 class Query:
     def POST(self):
@@ -64,18 +64,15 @@ class Query:
             q = q + ' AND (hasholding:y)'
         return q
 
-
 class QueryPage:
     def GET(self):
         return render_template('index.html')
-
 
 class QueryDetail:
     def GET(self):
         user_data = web.input()
         detail_list = hnulib.get_book_detail_info(user_data)
         return render_template('details.html', detail_list=detail_list)
-
 
 app = web.application(urls, globals())
 wsgi_app = app.wsgifunc()
