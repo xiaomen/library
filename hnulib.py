@@ -6,8 +6,8 @@ import urllib2
 import xml.etree.ElementTree as etree
 import string
 
-book_attr = ['BOOKRECNO', 'AUTHOR', 'ISBN', 'PAGE', 'PRICE', 
-'PUBLISHER', 'PUBDATE', 'TITLE', 'SUBJECT', 'BOOKTYPE']
+book_attr = ['BOOKRECNO', 'AUTHOR', 'ISBN', 'PAGE', 'PRICE',
+             'PUBLISHER', 'PUBDATE', 'TITLE', 'SUBJECT', 'BOOKTYPE']
 
 navbar_attr = 'NAVBAR'
 session_attr = 'SESSION'
@@ -19,11 +19,12 @@ html_escape_table = {
     '"': "&quot;",
     "'": "&apos;",
     ">": "&gt;",
-    "<": "&lt;"
-    }
+    "<": "&lt;"}
+
 
 def html_escape(text):
     return "".join(html_escape_table.get(c, c) for c in text)
+
 
 def html_unescape(s):
     s = s.replace("&lt;", "<")
@@ -33,21 +34,24 @@ def html_unescape(s):
     s = s.replace("&amp;", "&")
     return s
 
+
 def get_value_from_xml_node(tree, path, default):
     node = tree.find(path)
     if node == None:
         return default
     return node.text
 
-def get_book_list_from_xml(xml):
 
+def get_book_list_from_xml(xml):
     tree = etree.fromstring(xml)
     book_query_result = {}
-
     book_query_result['book_list'] = []
-    book_query_result['CURPAGE'] = string.atoi(get_value_from_xml_node(tree, session_attr + '/CURPAGE', '0'))
-    book_query_result['PAGEROWS'] = string.atoi(get_value_from_xml_node(tree, navbar_attr + '/PAGEROWS', '0'))
-    book_query_result['TOTALROWS'] = string.atoi(get_value_from_xml_node(tree, navbar_attr + '/TOTALROWS', '0'))
+    book_query_result['CURPAGE'] = string.atoi(get_value_from_xml_node(
+        tree, session_attr + '/CURPAGE', '0'))
+    book_query_result['PAGEROWS'] = string.atoi(get_value_from_xml_node(
+        tree, navbar_attr + '/PAGEROWS', '0'))
+    book_query_result['TOTALROWS'] = string.atoi(get_value_from_xml_node(
+        tree, navbar_attr + '/TOTALROWS', '0'))
     bookrows = tree.findall('ROW')
     if bookrows == None:
         book_query_result['has_result'] = False
@@ -64,6 +68,7 @@ def get_book_list_from_xml(xml):
 
     return book_query_result
 
+
 def new_search_book(p):
     p['filter'] = p['filter'].encode('utf-8')
     p['bookType'] = p['bookType'].encode('utf-8')
@@ -74,6 +79,7 @@ def new_search_book(p):
     xml = res.read()
     res.close()
     return get_book_list_from_xml(xml)
+
 
 def get_hold_state(tree):
     ret_dict = {}
@@ -87,6 +93,7 @@ def get_hold_state(tree):
 
     return ret_dict
 
+
 def get_book_type(tree):
     ret_dict = {}
 
@@ -98,6 +105,7 @@ def get_book_type(tree):
             ret_dict[key] = value
 
     return ret_dict
+
 
 def get_lib_local(tree):
     ret_dict = {}
@@ -111,6 +119,7 @@ def get_lib_local(tree):
 
     return ret_dict
 
+
 def get_lib(tree):
     ret_dict = {}
 
@@ -119,12 +128,13 @@ def get_lib(tree):
         for row in rows:
             key = row.find('LIBCODE').text
             value = row.find('SIMPLENAME').text
-            if key != '999' : ret_dict[key] = value
-     
+            if key != '999':
+                ret_dict[key] = value
+
     return ret_dict
 
+
 def get_book_detail_from_xml(xml):
-    
     new_xml = re.compile('<HEAD>(.*)</HEAD>').sub('', xml)
     tree = etree.fromstring(new_xml)
 
@@ -143,32 +153,36 @@ def get_book_detail_from_xml(xml):
 
     for row in rows:
         detail = {}
-        detail['BARCODE'] = barcode = get_value_from_xml_node(row, 'BARCODE', '')
-        detail['CALLNO']  = get_value_from_xml_node(row, 'CALLNO', '')
-        detail['TOTALLOANNUM']  = get_value_from_xml_node(row, 'TOTALLOANNUM', '')
-        detail['TOTALRENEWNUM']  = get_value_from_xml_node(row, 'TOTALRENEWNUM', '')
+        barcode = get_value_from_xml_node(row, 'BARCODE', '')
+        detail['BARCODE'] = barcode
+        detail['CALLNO'] = get_value_from_xml_node(
+            row, 'CALLNO', '')
+        detail['TOTALLOANNUM'] = get_value_from_xml_node(
+            row, 'TOTALLOANNUM', '')
+        detail['TOTALRENEWNUM'] = get_value_from_xml_node(
+            row, 'TOTALRENEWNUM', '')
 
         if loanrows != None:
             for loan in loanrows:
                 bar = get_value_from_xml_node(loan, 'BARCODE', '')
                 if len(bar) > 0 and bar == barcode:
-                    detail['LOANDATE'] = get_value_from_xml_node(loan, 'LOANDATE', '')
-                    detail['RETURNDATE'] = get_value_from_xml_node(loan, 'RETURNDATE', '')
+                    detail['LOANDATE'] = get_value_from_xml_node(
+                        loan, 'LOANDATE', '')
+                    detail['RETURNDATE'] = get_value_from_xml_node(
+                        loan, 'RETURNDATE', '')
 
         state = get_value_from_xml_node(row, 'STATE', '')
         detail['STATE'] = hold_state_dict.get(state, '')
-
         curlib = get_value_from_xml_node(row, 'CURLIB', '')
         detail['CURLIB'] = lib_dict.get(curlib, '')
-
-        cirtype = get_value_from_xml_node(row,'CIRTYPE', '')
+        cirtype = get_value_from_xml_node(row, 'CIRTYPE', '')
         detail['CIRTYPE'] = book_type_dict.get(cirtype, '')
-
         curlocal = get_value_from_xml_node(row, 'CURLOCAL', '')
         detail['CURLOCAL'] = lib_local_dict.get(curlocal, '')
 
         detail_list.append(detail)
     return detail_list
+
 
 def get_book_detail_info(p):
     req = urllib2.Request(url + '?' + urllib.urlencode(p))
