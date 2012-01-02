@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="author" content="lepture" />
+<meta name="keywords" content="" />
+<meta name="description" content="" />
+<meta charset="UTF-8" />
+<title>{%block title%}校门口 - 图书馆{% endblock %}</title>
+<link rel="stylesheet" href="{{'/static/style.css'|s_files }}" />
+</head>
+
+<body>
+    <div id="header" >
+        {% block header %}
+        <h2>校门口</h2>
+        {% endblock %}
+    </div>
+
+    <div id="nav" >
+        {% block nav %}
+        <a href="http://library.xiaom.co/" class="hl" >图书馆</a>
+        {% endblock %}
+    </div>
+
+    <div id="search" >
+        {% block search %}
+        <form method="post" action="result.html" >
+            <input type="text" name="key" size="30" />
+            <input type="submit" value="搜书" />
+        </form>
+        {% endblock %}
+    </div>
+
+    <div id="content" >
+        {% block content %}
+        {% endblock  %}
+    </div>
+
+    <div id="footer" >
+        {% block footer  %}
+        <a href="" >反馈</a> | 2012 @ 校门口
+        {% endblock %}
+    </div>
+</body>
+</html>
