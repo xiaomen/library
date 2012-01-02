@@ -4,5 +4,8 @@ runtime: python
 debug: True 
 
 handlers:
+- url: /static/(.*)
+  static_files: static/\1
+
 - url: /.*
   wsgi_app: app:wsgi_app

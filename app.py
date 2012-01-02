@@ -2,6 +2,7 @@
 
 import os
 import web
+from sheep.api.statics import static_files
 from jinja2 import Environment, FileSystemLoader
 
 import hnulib
@@ -20,6 +21,7 @@ def render_template(template_name, **context):
                                 'templates')),
         extensions=extensions)
     jinja_env.globals.update(globals)
+    jinja_env.filters['s_files'] = static_files
     return jinja_env.get_template(template_name).render(context)
 
 class Query:

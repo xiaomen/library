@@ -1,26 +1,12 @@
-<html>
-    <head>
-        <META http-equiv="Content-Type" content="text/html;charset=UTF-8" />
-        <Title>书目信息</Title>
-    </head>
-    <body>
-        <table border="1">
-            <tr>
-                <th>Title</th>
-                <th>Author</th>
-                <th>Publisher</th>
-                <th></th>
-            </tr>
-
-            {% for book in query_result['book_list'] %}
-            <tr>
-                <td>{{ book['TITLE'] }}</td>
-                <td>{{ book['AUTHOR']}}</td>
-                <td>{{ book['PUBLISHER'] }}</td>
-                <td><a href="/QueryDetail?cmdACT=detailmarc&xsl=listdetailmarc.xsl&bookrecno={{ book['BOOKRECNO'] }}">查看详细信息</a></td>
-            </tr>
-            {% endfor %}
-        </table><br />
+{% extends "index.html" %}
+{% block content %}
+    <dl >
+        {% for book in query_result['book_list'] %}
+        <dt ><a href="detail.html" >{{ book['TITLE'] }}</a></dt>
+        <dd >索书号 / {{ book['AUTHOR'] }} / {{ book['PUBLISHER'] }} / 出版年月</dd>
+        {% endfor %}
+    </dl>
+    <p >
         <form name="previousForm" method="post" action="/Query">
             <input type="hidden" name="col1" value="marc" />
             <input type="hidden" name="marcformat" value="all" />
@@ -64,8 +50,8 @@
             <input type="hidden" name="endPubdate" value="" />
             <input type="hidden" name="val1" value="{{ val1 }}" />
             <input type="hidden" name="sortSign" value="{{ sortSign }}" />
-            <input type="hidden" name="hasholdingCheckbox" value="{{ hasholdingCheckbox }}" />
+            <input type="hidden" name="hasholdingCheckbox" value="" />
             <input type="submit" value="后一页" />
         </form>
-    </body>
-</html>
+    </p>
+{% endblock %}
