@@ -9,6 +9,7 @@
     <p >
         <table>
             <tr>
+                {% if query_result['CURPAGE'] > 1 %}
                 <td>
                     <form name="previousForm" method="post" action="/Query">
                         <input type="hidden" name="pageNo" value="{{ query_result['CURPAGE'] - 1 }}" />
@@ -18,6 +19,8 @@
                         <input type="submit" value="前一页" />
                     </form>
                 </td>
+                {% endif %}
+                {% if query_result['CURPAGE'] < query_result['PAGES'] %}
                 <td>
                     <form name="nextForm" method="post" action="/Query">
                         <input type="hidden" name="pageNo" value="{{ query_result['CURPAGE'] + 1 }}" />
@@ -27,6 +30,7 @@
                         <input type="submit" value="后一页" />
                     </form>
                 </td>
+                {% endif %}
         </table>
     </p>
 {% endblock %}
