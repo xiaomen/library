@@ -8,49 +8,17 @@
     </dl>
     <p >
         <form name="previousForm" method="post" action="/Query">
-            <input type="hidden" name="col1" value="marc" />
-            <input type="hidden" name="marcformat" value="all" />
-            <input type="hidden" name="booktype" value="all" />
-            <input type="hidden" name="raws" value="10" />
             <input type="hidden" name="pageNo" value="{{ query_result['CURPAGE'] - 1 }}" />
-            <input type="hidden" name="cmdACT" value="list" />
-            <input type="hidden" name="xsl" value="BOOK_list.xsl" />
-            <input type="hidden" name="mod" value="oneXSL" />
-            <input type="hidden" name="columnID" value="1" />
-            <input type="hidden" name="searchSign" value="" />
-            <input type="hidden" name="libNUM" value="1" />
-            <input type="hidden" name="ISFASTSEARCH" value="true" />
-            <input type="hidden" name="matching" value="radiobutton" />
-            <input type="hidden" name="multiSelectLibcode" value="" />
-            <input type="hidden" name="orderSign" value="true" />
-            <input type="hidden" name="startPubdate" value="" />
-            <input type="hidden" name="endPubdate" value="" />
             <input type="hidden" name="val1" value="{{ val1 }}" />
             <input type="hidden" name="sortSign" value="{{ sortSign }}" />
             <input type="hidden" name="hasholdingCheckbox" value="{{ hasholdingCheckbox }}" />
             <input type="submit" value="前一页" />
         </form>
         <form name="nextForm" method="post" action="/Query">
-            <input type="hidden" name="col1" value="marc" />
-            <input type="hidden" name="marcformat" value="all" />
-            <input type="hidden" name="booktype" value="all" />
-            <input type="hidden" name="raws" value="10" />
             <input type="hidden" name="pageNo" value="{{ query_result['CURPAGE'] + 1 }}" />
-            <input type="hidden" name="cmdACT" value="list" />
-            <input type="hidden" name="xsl" value="BOOK_list.xsl" />
-            <input type="hidden" name="mod" value="oneXSL" />
-            <input type="hidden" name="columnID" value="1" />
-            <input type="hidden" name="searchSign" value="" />
-            <input type="hidden" name="libNUM" value="1" />
-            <input type="hidden" name="ISFASTSEARCH" value="true" />
-            <input type="hidden" name="matching" value="radiobutton" />
-            <input type="hidden" name="multiSelectLibcode" value="" />
-            <input type="hidden" name="orderSign" value="true" />
-            <input type="hidden" name="startPubdate" value="" />
-            <input type="hidden" name="endPubdate" value="" />
             <input type="hidden" name="val1" value="{{ val1 }}" />
             <input type="hidden" name="sortSign" value="{{ sortSign }}" />
-            <input type="hidden" name="hasholdingCheckbox" value="" />
+			<input type="hidden" name="hasholdingCheckbox" value="{{ hasholdingCheckbox }}" />
             <input type="submit" value="后一页" />
         </form>
     </p>

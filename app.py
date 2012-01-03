@@ -7,26 +7,42 @@ from jinja2 import Environment, FileSystemLoader
 
 import hnulib
 
+params = {
+        "col1": "marc",
+        "marcformat": "all",
+        "booktype": "all",
+        "raws": "10",
+        "cmdACT": "list",
+        "xsl": "BOOK_list.xsl",
+        "mod": "oneXSL",
+        "columnID": "1",
+        "searchSign": "",
+        "libNUM": "1",
+        "ISFASTSEARCH": "true",
+        "matching": "radiobutton",
+        "multiSelectLibcode": "",
+        "orderSign": "true",
+        "startPubdate": "",
+        "endPubdate": "",
+    }
+
 urls = (
     '/Query', 'Query',
     '/QueryDetail', 'QueryDetail',
     '/.*', 'QueryPage',
 )
 
-def render_template(template_name, **context):
-    extensions = context.pop('extensions', [])
-    globals = context.pop('globals', {})
-    jinja_env = Environment(
-        loader=FileSystemLoader(os.path.join(os.path.dirname(__file__),
-                                'templates')),
-        extensions=extensions)
-    jinja_env.globals.update(globals)
-    jinja_env.filters['s_files'] = static_files
-    return jinja_env.get_template(template_name).render(context)
+jinja_env = Environment(
+    loader=FileSystemLoader(os.path.join(os.path.dirname(__file__),
+                            'templates')),
+    extensions=[])
+jinja_env.globals.update({})
+jinja_env.filters['s_files'] = static_files
 
 class Query:
     def POST(self):
         user_data = web.input()
+        user_data = dict(user_data, **params) 
         if user_data['hasholdingCheckbox'] == 'on':
             user_data['hasholding'] = 'y'
         else:
@@ -38,8 +54,7 @@ class Query:
         if user_data['marcformat'] != 'all':
             user_data['marcformat'] = 'radiobutton'
         query_result = hnulib.new_search_book(user_data)
-        return render_template(
-            'result.html',
+        return jinja_env.get_template('result.html').render(
             query_result=query_result,
             val1=hnulib.html_escape(user_data['val1'].decode('utf-8')),
             sortSign=user_data['sortSign'],
@@ -68,13 +83,13 @@ class Query:
 
 class QueryPage:
     def GET(self):
-        return render_template('index.html')
+        return jinja_env.get_template('index.html').render()
 
 class QueryDetail:
     def GET(self):
         user_data = web.input()
         detail_list = hnulib.get_book_detail_info(user_data)
-        return render_template('details.html', detail_list=detail_list)
+        return jinja_env.get_template('details.html').render(detail_list=detail_list)
 
 app = web.application(urls, globals())
 wsgi_app = app.wsgifunc()
