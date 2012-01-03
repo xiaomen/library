@@ -7,19 +7,23 @@
         {% endfor %}
     </dl>
     <p >
+ 	    {% if query_result['CURPAGE'] > 1 %}
         <form name="previousForm" method="post" action="/Query">
             <input type="hidden" name="pageNo" value="{{ query_result['CURPAGE'] - 1 }}" />
             <input type="hidden" name="val1" value="{{ val1 }}" />
             <input type="hidden" name="sortSign" value="{{ sortSign }}" />
             <input type="hidden" name="hasholdingCheckbox" value="{{ hasholdingCheckbox }}" />
             <input type="submit" value="前一页" />
-        </form>
+		</form>
+		{% endif %}
+		{% if query_result['CURPAGE'] < query_result['PAGES'] %}
         <form name="nextForm" method="post" action="/Query">
             <input type="hidden" name="pageNo" value="{{ query_result['CURPAGE'] + 1 }}" />
             <input type="hidden" name="val1" value="{{ val1 }}" />
             <input type="hidden" name="sortSign" value="{{ sortSign }}" />
 			<input type="hidden" name="hasholdingCheckbox" value="{{ hasholdingCheckbox }}" />
             <input type="submit" value="后一页" />
-        </form>
+		</form>
+		{% endif %}
     </p>
 {% endblock %}

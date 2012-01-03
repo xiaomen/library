@@ -38,6 +38,13 @@ def get_value_from_xml_node(tree, path, default):
         return default
     return node.text
 
+def int_ceil(a, b):
+    if b == 0:
+        return 0
+    if (a % b == 0):
+        return a / b
+    return a / b + 1
+
 def get_book_list_from_xml(xml):
     tree = etree.fromstring(xml)
     book_query_result = {}
@@ -45,6 +52,7 @@ def get_book_list_from_xml(xml):
     book_query_result['CURPAGE'] = string.atoi(get_value_from_xml_node(tree, session_attr + '/CURPAGE', '0'))
     book_query_result['PAGEROWS'] = string.atoi(get_value_from_xml_node(tree, navbar_attr + '/PAGEROWS', '0'))
     book_query_result['TOTALROWS'] = string.atoi(get_value_from_xml_node(tree, navbar_attr + '/TOTALROWS', '0'))
+    book_query_result['PAGES'] = int_ceil(book_query_result['TOTALROWS'], book_query_result['PAGEROWS'])
     bookrows = tree.findall('ROW')
     if bookrows == None:
         book_query_result['has_result'] = False
