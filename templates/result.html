@@ -2,24 +2,31 @@
 {% block content %}
     <dl >
         {% for book in query_result['book_list'] %}
-        <dt ><a href="detail.html" >{{ book['TITLE'] }}</a></dt>
-        <dd >索书号 / {{ book['AUTHOR'] }} / {{ book['PUBLISHER'] }} / 出版年月</dd>
+        <dt ><a href="/QueryDetail?cmdACT=detailmarc&xsl=listdetailmarc.xsl&bookrecno={{ book['BOOKRECNO'] }}" >{{ book['TITLE'] }}</a></dt>
+        <dd >{{ book['AUTHOR'] }} / {{ book['PUBLISHER'] }} / {{ book['PUBDATE'] }}</dd>
         {% endfor %}
     </dl>
     <p >
-        <form name="previousForm" method="post" action="/Query">
-            <input type="hidden" name="pageNo" value="{{ query_result['CURPAGE'] - 1 }}" />
-            <input type="hidden" name="val1" value="{{ val1 }}" />
-            <input type="hidden" name="sortSign" value="{{ sortSign }}" />
-            <input type="hidden" name="hasholdingCheckbox" value="{{ hasholdingCheckbox }}" />
-            <input type="submit" value="前一页" />
-        </form>
-        <form name="nextForm" method="post" action="/Query">
-            <input type="hidden" name="pageNo" value="{{ query_result['CURPAGE'] + 1 }}" />
-            <input type="hidden" name="val1" value="{{ val1 }}" />
-            <input type="hidden" name="sortSign" value="{{ sortSign }}" />
-			<input type="hidden" name="hasholdingCheckbox" value="{{ hasholdingCheckbox }}" />
-            <input type="submit" value="后一页" />
-        </form>
+        <table>
+            <tr>
+                <td>
+                    <form name="previousForm" method="post" action="/Query">
+                        <input type="hidden" name="pageNo" value="{{ query_result['CURPAGE'] - 1 }}" />
+                        <input type="hidden" name="val1" value="{{ val1 }}" />
+                        <input type="hidden" name="sortSign" value="{{ sortSign }}" />
+                        <input type="hidden" name="hasholdingCheckbox" value="{{ hasholdingCheckbox }}" />
+                        <input type="submit" value="前一页" />
+                    </form>
+                </td>
+                <td>
+                    <form name="nextForm" method="post" action="/Query">
+                        <input type="hidden" name="pageNo" value="{{ query_result['CURPAGE'] + 1 }}" />
+                        <input type="hidden" name="val1" value="{{ val1 }}" />
+                        <input type="hidden" name="sortSign" value="{{ sortSign }}" />
+                        <input type="hidden" name="hasholdingCheckbox" value="{{ hasholdingCheckbox }}" />
+                        <input type="submit" value="后一页" />
+                    </form>
+                </td>
+        </table>
     </p>
 {% endblock %}

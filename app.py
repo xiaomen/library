@@ -89,7 +89,7 @@ class QueryDetail:
     def GET(self):
         user_data = web.input()
         detail_list = hnulib.get_book_detail_info(user_data)
-        return jinja_env.get_template('details.html').render(detail_list=detail_list)
+        return jinja_env.get_template('detail.html').render(detail_list=detail_list)
 
 app = web.application(urls, globals())
 wsgi_app = app.wsgifunc()
