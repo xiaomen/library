@@ -84,6 +84,7 @@ def new_search_book(p):
         res.close()
         return get_book_list_from_xml(xml)
     except:
+        logger.info(p)
         logger.exception('error occured')
     return []
 
