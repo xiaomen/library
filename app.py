@@ -53,12 +53,15 @@ class Query:
         user_data['val1'] = hnulib.html_unescape(user_data['val1'])
         if user_data['marcformat'] != 'all':
             user_data['marcformat'] = 'radiobutton'
-        query_result = hnulib.new_search_book(user_data)
-        return jinja_env.get_template('result.html').render(
-            query_result=query_result,
-            val1=hnulib.html_escape(user_data['val1'].decode('utf-8')),
-            sortSign=user_data['sortSign'],
-            hasholdingCheckbox=user_data['hasholdingCheckbox'])
+        try:
+            query_result = hnulib.new_search_book(user_data)
+            return jinja_env.get_template('result.html').render(
+                query_result=query_result,
+                val1=hnulib.html_escape(user_data['val1'].decode('utf-8')),
+                sortSign=user_data['sortSign'],
+                hasholdingCheckbox=user_data['hasholdingCheckbox'])
+        except:
+            return jinja_env.get_template('500.html').render()
 
     def calc_book_type_value(self, user_data):
         words = {'1': u'图书', '2': u'期刊', '3': u'非书资料',

@@ -39,9 +39,6 @@ dd {
     background-color: #41a5eb;
     color: #FFFFFF;
 }
-#nav a:visited {
-    color: #FFFFFF;
-}
 #search {
     border-bottom: 1px solid #ccc;
     font-size: .5em;

@@ -86,7 +86,7 @@ def new_search_book(p):
     except:
         logger.info(p)
         logger.exception('error occured')
-    return []
+        raise
 
 def get_hold_state(tree):
     ret_dict = {}
