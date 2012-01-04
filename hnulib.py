@@ -4,6 +4,7 @@ import re
 import string
 import urllib
 import urllib2
+import logging
 import xml.etree.ElementTree as etree
 
 book_attr = ['BOOKRECNO', 'AUTHOR', 'ISBN', 'PAGE', 'PRICE',
@@ -20,6 +21,8 @@ html_escape_table = {
     "'": "&apos;",
     ">": "&gt;",
     "<": "&lt;"}
+
+logger = logging.getLogger(__name__)
 
 def html_escape(text):
     return "".join(html_escape_table.get(c, c) for c in text)
@@ -74,11 +77,15 @@ def new_search_book(p):
     p['bookType'] = p['bookType'].encode('utf-8')
     p['marcType'] = p['marcType'].encode('utf-8')
     p['val1'] = p['val1'].encode('utf-8')
-    req = urllib2.Request(url + '?' + urllib.urlencode(p))
-    res = urllib2.urlopen(req)
-    xml = res.read()
-    res.close()
-    return get_book_list_from_xml(xml)
+    try:
+        req = urllib2.Request(url + '?' + urllib.urlencode(p))
+        res = urllib2.urlopen(req)
+        xml = res.read()
+        res.close()
+        return get_book_list_from_xml(xml)
+    except:
+        logger.exception('error occured')
+    return []
 
 def get_hold_state(tree):
     ret_dict = {}
