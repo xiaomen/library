@@ -78,13 +78,13 @@ def new_search_book(p):
     p['marcType'] = p['marcType'].encode('utf-8')
     p['val1'] = p['val1'].encode('utf-8')
     try:
+        logger.info(p)
         req = urllib2.Request(url + '?' + urllib.urlencode(p))
         res = urllib2.urlopen(req)
         xml = res.read()
         res.close()
         return get_book_list_from_xml(xml)
     except:
-        logger.info(p)
         logger.exception('error occured')
         raise
 
