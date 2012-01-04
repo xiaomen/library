@@ -85,7 +85,7 @@ def new_search_book(p):
         return get_book_list_from_xml(xml)
     except:
         logger.info(p)
-        logger.exception('error occured')
+        logger.exception('error occrued')
         raise
 
 def get_hold_state(tree):
