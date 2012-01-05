@@ -139,7 +139,7 @@ def get_book_detail_from_xml(xml):
 
     #get some meta info of library
     hold_state_dict = get_hold_state(tree)
-我知道    book_type_dict = get_book_type(tree)
+    book_type_dict = get_book_type(tree)
     lib_local_dict = get_lib_local(tree)
     lib_dict = get_lib(tree)
 
