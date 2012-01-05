@@ -13,7 +13,8 @@ book_attr = ['BOOKRECNO', 'AUTHOR', 'ISBN', 'PAGE', 'PRICE',
 navbar_attr = 'NAVBAR'
 session_attr = 'SESSION'
 
-url = 'http://deploy2.xiaom.co:8998/opac/websearch/bookSearch'
+url = 'http://opac.lib.hnu.cn/opac/websearch/bookSearch'
+
 
 html_escape_table = {
     "&": "&amp;",
@@ -73,18 +74,21 @@ def get_book_list_from_xml(xml):
     return book_query_result
 
 def new_search_book(p):
-    p['filter'] = p['filter'].encode('utf-8')
-    p['bookType'] = p['bookType'].encode('utf-8')
-    p['marcType'] = p['marcType'].encode('utf-8')
-    p['val1'] = p['val1'].encode('utf-8')
+    #p['filter'] = p['filter'].encode('utf-8')
+    #p['bookType'] = p['bookType'].encode('utf-8')
+    #p['marcType'] = p['marcType'].encode('utf-8')
+    #p['val1'] = p['val1'].encode('utf-8')
+    for key in p.keys():
+        if isinstance(p[key], unicode):
+            p[key] = p[key].encode('utf-8')
     try:
-        logger.info(p)
         req = urllib2.Request(url + '?' + urllib.urlencode(p))
-        res = urllib2.urlopen(req)
+        res = urllib2.urlopen(req, timeout=15)
         xml = res.read()
         res.close()
         return get_book_list_from_xml(xml)
     except:
+        logger.info(p)
         logger.exception('error occured')
         raise
 
@@ -135,7 +139,7 @@ def get_book_detail_from_xml(xml):
 
     #get some meta info of library
     hold_state_dict = get_hold_state(tree)
-    book_type_dict = get_book_type(tree)
+我知道    book_type_dict = get_book_type(tree)
     lib_local_dict = get_lib_local(tree)
     lib_dict = get_lib(tree)
 
@@ -179,8 +183,13 @@ def get_book_detail_from_xml(xml):
     return detail_list
 
 def get_book_detail_info(p):
-    req = urllib2.Request(url + '?' + urllib.urlencode(p))
-    res = urllib2.urlopen(req)
-    xml = res.read()
-    res.close()
-    return get_book_detail_from_xml(xml)
+    try:
+        req = urllib2.Request(url + '?' + urllib.urlencode(p))
+        res = urllib2.urlopen(req, timeout=15)
+        xml = res.read()
+        res.close()
+        return get_book_detail_from_xml(xml)
+    except:
+        logger.info('error occured when getting detail info')
+        logger.exception('error occured')
+        raise
