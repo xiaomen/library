@@ -1,27 +1,17 @@
 {% extends "layout.html" %}
 
 {% block search %}
-<form method="post" action="/Query">
+<form method="get" action="/Query">
     <input type="hidden" name="pageNo" value="1" />
     <table>
         <tr>
-            <td>检索词:</td>
             <td>
-                <input type="text" size="50" name="val1" />
+                <input size="30" type="text" name="val1" />
+            </td>
+			<td style="padding-left:10px;">
                 <input type="submit"  value="查询" />
-            </td>
+			</td>
         </tr>
-        <tr>
-            <td>排序选项：</td>
-            <td>
-                <select name="sortSign">
-                    <option value="score_sort">匹配度</option>
-                    <option value="pubdate_sort">出版日期</option>
-                    <option value="loannum_sort">借阅次数</option>
-                </select>
-            </td>
-            <input type="checkbox" name="hasholdingCheckbox" checked="yes" />只搜索有馆藏的书目
-        </tr>
-    </table>
+	</table>
 </form>
 {% endblock %}

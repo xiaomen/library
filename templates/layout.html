@@ -6,34 +6,37 @@
 <meta name="description" content="" />
 <meta charset="UTF-8" />
 <title>{%block title%}校门口 - 图书馆{% endblock %}</title>
-<link rel="stylesheet" href="{{'/static/style.css'|s_files }}" />
+<link rel="stylesheet" href="{{'/static/css/style.css'|s_files }}" />
 </head>
 
 <body>
-    <div id="header" >
-        {% block header %}
-        <h2>校门口 - 图书馆借阅查询</h2>
-        {% endblock %}
-    </div>
+    <div id="wrapper">
+        <div id="header">
+            {%block header%}
+            <h1>校门口</h1>
+            {% endblock %}
+        </div>
 
-    <div id="search" >
-        {% block search %}
-        <form method="post" action="result.html" >
-            <input type="text" name="key" size="30" />
-            <input type="submit" value="搜书" />
-        </form>
-        {% endblock %}
-    </div>
-
-    <div id="content" >
-        {% block content %}
-        {% endblock  %}
-    </div>
-
-    <div id="footer" >
-        {% block footer  %}
-        <a href="" >反馈</a> | 2012 @ 校门口
-        {% endblock %}
+        <ul id="nav" class="clearfix">
+            {%block nav %}
+            <li><a href="http://xiaomen.co">首页</a></li>
+            <li class="select"><a href="http://library.xiaom.co">图书馆</a></li>
+            <li><a href="http://selfstudy.xiaom.co/hnu/buildings">自习室</a></li>
+            {% endblock %}
+        </ul>
+		<div id="search" class="content">
+			{% block search %}
+			{% endblock %}
+		</div>
+        <div id="section" class="content">
+            {%block content %}
+            {% endblock %}
+        </div>
+        <div id="footer">
+            {% block footer%}
+            <a href="#" title="反馈">反馈</a> | 2012 • 校门口
+            {% endblock %}
+        </div>
     </div>
 </body>
 </html>

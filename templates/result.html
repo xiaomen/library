@@ -1,36 +1,15 @@
 {% extends "index.html" %}
 {% block content %}
-    <dl >
+    <dl>
         {% for book in query_result['book_list'] %}
-        <dt ><a href="/QueryDetail?cmdACT=detailmarc&xsl=listdetailmarc.xsl&bookrecno={{ book['BOOKRECNO'] }}" >{{ book['TITLE'] }}</a></dt>
-        <dd >{{ book['AUTHOR'] }} / {{ book['PUBLISHER'] }} / {{ book['PUBDATE'] }}</dd>
+		<dt ><a href="/QueryDetail?pageNo={{ pageNo }}&val1={{ val1 }}&cmdACT=detailmarc&xsl=listdetailmarc.xsl&bookrecno={{ book['BOOKRECNO'] }}" >{{ book['TITLE'] }}</a></dt>
+		<dd >{{ book['AUTHOR'] }} / {{ book['PUBLISHER'] }} / {{ book['PUBDATE'] }}</dd>
         {% endfor %}
     </dl>
-    <p >
-        <table>
-            <tr>
-                {% if query_result['CURPAGE'] > 1 %}
-                <td>
-                    <form name="previousForm" method="post" action="/Query">
-                        <input type="hidden" name="pageNo" value="{{ query_result['CURPAGE'] - 1 }}" />
-                        <input type="hidden" name="val1" value="{{ val1 }}" />
-                        <input type="hidden" name="sortSign" value="{{ sortSign }}" />
-                        <input type="hidden" name="hasholdingCheckbox" value="{{ hasholdingCheckbox }}" />
-                        <input type="submit" value="前一页" />
-                    </form>
-                </td>
-                {% endif %}
-                {% if query_result['CURPAGE'] < query_result['PAGES'] %}
-                <td>
-                    <form name="nextForm" method="post" action="/Query">
-                        <input type="hidden" name="pageNo" value="{{ query_result['CURPAGE'] + 1 }}" />
-                        <input type="hidden" name="val1" value="{{ val1 }}" />
-                        <input type="hidden" name="sortSign" value="{{ sortSign }}" />
-                        <input type="hidden" name="hasholdingCheckbox" value="{{ hasholdingCheckbox }}" />
-                        <input type="submit" value="后一页" />
-                    </form>
-                </td>
-                {% endif %}
-        </table>
-    </p>
+    <p>
+	{% if query_result['CURPAGE'] < query_result['PAGES'] %} <a href="/Query?pageNo={{ query_result['CURPAGE'] + 1 }}&val1={{ val1 }}">下一页</a> {% endif %}
+	{% if query_result['CURPAGE'] > 1 %} <a href="/Query?pageNo={{ query_result['CURPAGE'] - 1 }}&val1={{ val1 }}">上一页</a> {% endif %}
+	<span>{{ query_result['CURPAGE'] }}/{{ query_result['PAGES']}}</span>
+	{% if query_result['CURPAGE'] > 1 %} <a href="/Query?pageNo=1&val1={{ val1 }}">第一页</a> {% endif %}
+	</p>
 {% endblock %}

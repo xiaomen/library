@@ -1,0 +1,103 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.clearfix:before, .clearfix:after {
+    content: "";
+    display: table;
+}
+
+.clearfix:after {
+    clear: both;
+}
+
+html {
+    background: #fff;
+}
+
+a {
+    text-decoration: none;
+    color: #3a86c7;
+}
+
+ul {
+    list-style: none;
+}
+
+#header {
+    background: url(http://sheep-farm.b0.upaiyun.com/account/static/img/bg.png);
+    height: 38px;
+    line-height: 38px;
+    padding: 10px;
+    color: white;
+}
+
+#header h1 {
+    display: inline;
+}
+
+#header span {
+    margin-left: 10px;
+    font-weight: bold;
+}
+
+#nav {
+    border-top: 6px solid #3a86c7;
+    font-size: 14px;
+}
+
+.content {
+	font-size: 14px;
+	margin:5px 0 0 10px;
+}
+
+#nav li {
+    position: relative;
+    float: left;
+    display: block;
+    height: 32px;
+    line-height: 36px;
+    width: 60px;
+    text-align: center;
+}
+
+#nav li.select::before {
+    position: absolute;
+    content: "";
+    background: #79add0;
+    width: 60px;
+    height: 6px;
+    top: -6px;
+}
+
+#nav li.select a {
+    color: #3a86c7;
+    font-weight: bold;
+}
+
+div, dt, dd {
+    margin: 0;
+    padding: 3px 7px;
+}
+
+dl {
+    margin: 0;
+    padding: 0;
+}
+
+#search, #content {
+    border-bottom: 1px solid #ccc;
+    font-size: .5em;
+}
+
+dd {
+    border-bottom: 1px solid #ccc;
+}
+
+#footer {
+    border-top: 1px solid #f0f0f0;
+    padding: 6px 10px;
+    font-size: 12px;
+    color: #ccc;
+}

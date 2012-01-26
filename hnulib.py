@@ -143,8 +143,20 @@ def get_book_detail_from_xml(xml):
     lib_local_dict = get_lib_local(tree)
     lib_dict = get_lib(tree)
 
+    book = {}
     detail_list = []
-
+    book_info_prop = [('name', '200', 'suba'),
+            ('author', '200', 'subf'),
+            ('publisher', '210', 'subc'),
+            ('publish_time', '210', 'subd'),
+            ('isbn', '010', 'suba'),
+            ('callno', '905', 'subf')]
+    for prop in book_info_prop:
+        node = tree.find("FLD[FLDNAME='{0}']/{1}".format(prop[1], prop[2]))
+        if node == None:
+            book[prop[0]] = ''
+        else:
+            book[prop[0]] = node.text.strip()
     rows = tree.findall('ROWSET1/ROW')
     loanrows = tree.findall('ROWSET2/ROW')
     if rows == None:
@@ -180,9 +192,13 @@ def get_book_detail_from_xml(xml):
         detail['CURLOCAL'] = lib_local_dict.get(curlocal, '')
 
         detail_list.append(detail)
-    return detail_list
+        book['detail_list'] = detail_list
+    return book
 
 def get_book_detail_info(p):
+    for key in p.keys():
+        if isinstance(p[key], unicode):
+            p[key] = p[key].encode('utf-8')
     try:
         req = urllib2.Request(url + '?' + urllib.urlencode(p))
         res = urllib2.urlopen(req, timeout=15)
