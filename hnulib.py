@@ -152,7 +152,13 @@ def get_book_detail_from_xml(xml):
             ('isbn', '010', 'suba'),
             ('callno', '905', 'subf')]
     for prop in book_info_prop:
-        node = tree.find("FLD[FLDNAME='{0}']/{1}".format(prop[1], prop[2]))
+        node_list = tree.findall("FLD")
+        node = None
+        for n in node_list:
+            m = n.find('FLDNAME')
+            if m != None and m.text.strip() == prop[1]:
+                node = n.find(prop[2])
+        
         if node == None:
             book[prop[0]] = ''
         else:
