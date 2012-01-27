@@ -2,6 +2,7 @@
 
 import os
 import web
+import urllib
 from sheep.api.statics import static_files
 from jinja2 import Environment, FileSystemLoader
 
@@ -56,7 +57,7 @@ class Query:
             query_result = hnulib.new_search_book(user_data)
             return jinja_env.get_template('result.html').render(
                 query_result=query_result,
-                val1=hnulib.html_escape(user_data['val1'].decode('utf-8')),
+                val1=urllib.quote(user_data['val1']),
                 pageNo=user_data['pageNo'])
         except:
             return jinja_env.get_template('500.html').render()
@@ -93,7 +94,7 @@ class QueryDetail:
         return jinja_env.get_template('detail.html').render(
                 book=book,
                 pageNo=user_data['pageNo'],
-                val1=user_data['val1'].decode('utf-8'))
+                val1=urllib.quote(user_data['val1']))
 
 app = web.application(urls, globals())
 wsgi_app = app.wsgifunc()
