@@ -3,15 +3,7 @@
 {% block search %}
 <form method="get" action="/Query">
     <input type="hidden" name="pageNo" value="1" />
-    <table>
-        <tr>
-            <td>
-                <input size="30" type="text" name="val1" />
-            </td>
-			<td style="padding-left:10px;">
-                <input type="submit"  value="查询" />
-			</td>
-        </tr>
-	</table>
+    <input size="30" type="text" name="val1" />
+    <input style="padding-left:10px;" type="submit"  value="查询" />
 </form>
 {% endblock %}

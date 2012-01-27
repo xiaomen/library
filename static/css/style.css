@@ -76,20 +76,6 @@ ul {
     font-weight: bold;
 }
 
-div, dt, dd {
-    margin: 0;
-    padding: 3px 7px;
-}
-
-dl {
-    margin: 0;
-    padding: 0;
-}
-
-#search, #content {
-    font-size: .5em;
-}
-
 dd {
     border-bottom: 1px solid #ccc;
 }
