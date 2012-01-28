@@ -3,7 +3,7 @@
     <dl>
         {% for book in query_result['book_list'] %}
 		<dt ><a href="/QueryDetail?pageNo={{ pageNo }}&val1={{ val1 }}&cmdACT=detailmarc&xsl=listdetailmarc.xsl&bookrecno={{ book['BOOKRECNO'] }}" >{{ book['TITLE'] }}</a></dt>
-		<dd >{{ book['AUTHOR'] }} / {{ book['PUBLISHER'] }} / {{ book['PUBDATE'] }}</dd>
+		<dd >{{ book['CALLNO'] }} / {{ book['AUTHOR'] }} / {{ book['PUBLISHER'] }} / {{ book['PUBDATE'] }} / {% if book['BORROW'] %} 可借 {% else %} 不可借 {% endif %} </dd>
         {% endfor %}
     </dl>
     <p>

@@ -73,6 +73,38 @@ def get_book_list_from_xml(xml):
 
     return book_query_result
 
+def get_book_loan_info_from_xml(book_list, xml):
+    tree = etree.fromstring(xml)
+    callno_rows = tree.findall('ROWSET1/ROW')
+    loan_rows = tree.findall('ROWSET2/ROW')
+    for book in book_list:
+        book['CALLNO'] = ''
+        for row in callno_rows:
+            value = get_value_from_xml_node(row, 'BOOKRECNO', '')
+            if book['BOOKRECNO'] == value.strip():
+                book['CALLNO'] = get_value_from_xml_node(row, 'CALLNO', '')
+                break
+        book['BORROW'] = False
+        for row in loan_rows:
+            value = get_value_from_xml_node(row, 'BOOKRECNO', '')
+            if book['BOOKRECNO'] == value.strip():
+                book['BORROW'] = True
+                break
+
+def get_book_loan_info(book_list):
+    p = dict(cmdACT='getbooknum')
+    p['fill'] = ''.join([",'" + x['BOOKRECNO'] + "'" for x in book_list])
+    print p
+    try:
+        res = urllib2.urlopen(url + '?' + urllib.urlencode(p), timeout=15)
+        xml = res.read()
+        res.close()
+        get_book_loan_info_from_xml(book_list, xml)
+    except:
+        logger.info(p)
+        logger.exception('error occured when getting book loan info')
+        raise
+
 def new_search_book(p):
     #p['filter'] = p['filter'].encode('utf-8')
     #p['bookType'] = p['bookType'].encode('utf-8')
@@ -86,7 +118,10 @@ def new_search_book(p):
         res = urllib2.urlopen(req, timeout=15)
         xml = res.read()
         res.close()
-        return get_book_list_from_xml(xml)
+        result = get_book_list_from_xml(xml)
+        book_list = result['book_list']
+        get_book_loan_info(book_list)
+        return result
     except:
         logger.info(p)
         logger.exception('error occured')
