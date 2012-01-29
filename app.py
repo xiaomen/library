@@ -7,6 +7,7 @@ from sheep.api.statics import static_files
 from jinja2 import Environment, FileSystemLoader
 
 import hnulib
+import util
 
 params = {
         "col1": "marc",
@@ -50,7 +51,7 @@ class Query:
         user_data['filter'] = self.calc_filter_value(user_data)
         user_data['bookType'] = self.calc_book_type_value(user_data)
         user_data['marcType'] = self.calc_marc_type_value(user_data)
-        user_data['val1'] = hnulib.html_unescape(user_data['val1'])
+        user_data['val1'] = util.html_unescape(user_data['val1'])
         if user_data['marcformat'] != 'all':
             user_data['marcformat'] = 'radiobutton'
         try:
