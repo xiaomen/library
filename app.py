@@ -55,7 +55,6 @@ class Query:
         if len(keyword) * len(page_no) > 0:
             user_data['val1'] = keyword
             user_data['pageNo'] = page_no
-            print keyword + ' ' + page_no
         user_data['filter'] = self.calc_filter_value(user_data)
         user_data['bookType'] = self.calc_book_type_value(user_data)
         user_data['marcType'] = self.calc_marc_type_value(user_data)

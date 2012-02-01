@@ -13,8 +13,8 @@ book_attr = ['BOOKRECNO', 'AUTHOR', 'ISBN', 'PAGE', 'PRICE',
              'PUBLISHER', 'PUBDATE', 'TITLE', 'SUBJECT', 'BOOKTYPE']
 navbar_attr = 'NAVBAR'
 session_attr = 'SESSION'
-#url = 'http://opac.lib.hnu.cn/opac/websearch/bookSearch'
-url = 'http://deploy2.xiaom.co:8998/opac/websearch/bookSearch'
+url = 'http://opac.lib.hnu.cn/opac/websearch/bookSearch'
+#url = 'http://deploy2.xiaom.co:8998/opac/websearch/bookSearch'
 
 logger = logging.getLogger(__name__)
 
