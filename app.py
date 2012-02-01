@@ -2,6 +2,7 @@
 
 import os
 import web
+import json
 import urllib
 from sheep.api.statics import static_files
 from jinja2 import Environment, FileSystemLoader
@@ -32,7 +33,9 @@ params = {
     }
 
 urls = (
+    '/Query/(.*)/(.*)', 'Query',
     '/Query', 'Query',
+    '/QueryDetail/(.*)', 'QueryDetail',
     '/QueryDetail', 'QueryDetail',
     '/.*', 'QueryPage',
 )
@@ -44,10 +47,15 @@ jinja_env = Environment(
 jinja_env.globals.update({})
 jinja_env.filters['s_files'] = static_files
 
+
 class Query:
-    def GET(self):
+    def GET(self, keyword='', page_no=''):
         user_data = web.input()
         user_data = dict(user_data, **params) 
+        if len(keyword) * len(page_no) > 0:
+            user_data['val1'] = keyword
+            user_data['pageNo'] = page_no
+            print keyword + ' ' + page_no
         user_data['filter'] = self.calc_filter_value(user_data)
         user_data['bookType'] = self.calc_book_type_value(user_data)
         user_data['marcType'] = self.calc_marc_type_value(user_data)
@@ -56,6 +64,8 @@ class Query:
             user_data['marcformat'] = 'radiobutton'
         try:
             query_result = hnulib.new_search_book(user_data)
+            if len(keyword) * len(page_no) > 0:
+                return json.dumps(query_result)
             return jinja_env.get_template('result.html').render(
                 query_result=query_result,
                 val1=urllib.quote(user_data['val1']),
@@ -88,14 +98,24 @@ class QueryPage:
     def GET(self):
         return jinja_env.get_template('index.html').render()
 
+detail_params = {'cmdACT': 'detailmarc', 'xsl': 'listdetailmarc.xsl'}
+
 class QueryDetail:
-    def GET(self):
+    def GET(self, book_rec_no=''):
         user_data = web.input()
-        book = hnulib.get_book_detail_info(user_data)
-        return jinja_env.get_template('detail.html').render(
-                book=book,
-                pageNo=user_data['pageNo'],
-                val1=urllib.quote(user_data['val1']))
+        user_data = dict(user_data, **detail_params) 
+        if len(book_rec_no) > 0:
+            user_data['bookrecno'] = book_rec_no
+        try:
+            book = hnulib.get_book_detail_info(user_data)
+            if len(book_rec_no) > 0:
+                return json.dumps(book)
+            return jinja_env.get_template('detail.html').render(
+                    book=book,
+                    pageNo=user_data['pageNo'],
+                    val1=urllib.quote(user_data['val1']))
+        except:
+            return jinja_env.get_template('500.html').render()
 
 app = web.application(urls, globals())
 wsgi_app = app.wsgifunc()

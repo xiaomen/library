@@ -19,8 +19,6 @@ def html_unescape(s):
 def int_ceil(a, b):
     if b == 0:
         return 0
-    if (a % b == 0):
-        return a / b
-    return a / b + 1
+    return int((a + b - 1) / b)
 
 
