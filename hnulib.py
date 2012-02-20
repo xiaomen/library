@@ -49,6 +49,8 @@ def get_book_list_from_xml(xml):
     return book_query_result
 
 def get_book_loan_info_from_xml(book_list, xml):
+    cs = map(lambda x: chr(x), range(32))
+    xml = xml.translate(None, ''.join(cs))
     tree = etree.fromstring(xml)
     callno_rows = tree.findall('ROWSET1/ROW')
     loan_rows = tree.findall('ROWSET2/ROW')
