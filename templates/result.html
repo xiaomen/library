@@ -1,15 +1,35 @@
 {% extends "index.html" %}
 {% block content %}
-    <dl>
-        {% for book in query_result['book_list'] %}
-		<dt ><a href="/QueryDetail?pageNo={{ pageNo }}&val1={{ val1 }}&bookrecno={{ book['BOOKRECNO'] }}" >{{ book['TITLE'] }}</a></dt>
-		<dd >{{ book['CALLNO'] }} / {{ book['AUTHOR'] }} / {{ book['PUBLISHER'] }} / {{ book['PUBDATE'] }} / {% if book['BORROW'] %} 可借 {% else %} 不可借 {% endif %} </dd>
-        {% endfor %}
-    </dl>
-    <p>
-	{% if query_result['CURPAGE'] < query_result['PAGES'] %} <a href="/Query?pageNo={{ query_result['CURPAGE'] + 1 }}&val1={{ val1 }}">下一页</a> {% endif %}
-	{% if query_result['CURPAGE'] > 1 %} <a href="/Query?pageNo={{ query_result['CURPAGE'] - 1 }}&val1={{ val1 }}">上一页</a> {% endif %}
-	<span>{{ query_result['CURPAGE'] }}/{{ query_result['PAGES']}}</span>
-	{% if query_result['CURPAGE'] > 1 %} <a href="/Query?pageNo=1&val1={{ val1 }}">第一页</a> {% endif %}
-	</p>
+
+{% for book in query_result.book_list %}
+<dl class="result_dl">
+	<dt><a href="/QueryDetail?pageNo={{ pageNo }}&val1={{ val1 }}&bookrecno={{ book['BOOKRECNO'] }}" >{{ book['TITLE'] }}</a></dt>
+	<dd class="result_dd">
+		{% if book.CALLNO|length > 0 %}
+		{{ book.CALLNO }} /
+		{% endif %}
+		{% if book['BORROW'] %}
+		<span class="green_text">可借</span>
+		{% else %}
+		<span class="red_text">不可借</span>
+		{% endif %}
+		<br/>
+		{% if book.AUTHOR|length > 0 %}
+		{{ book.AUTHOR }} /
+		{% endif %}
+		{% if book.PUBLISHER|length > 0 %}
+		{{ book.PUBLISHER }} /
+		{% endif %}
+		{% if book.PUBDATE|length > 0 %}
+		{{ book.PUBDATE }} /
+		{% endif %}
+	</dd>
+</dl>
+{% endfor %}
+<p>
+{% if query_result['CURPAGE'] < query_result['PAGES'] %} <a href="/Query?pageNo={{ query_result['CURPAGE'] + 1 }}&val1={{ val1 }}">下一页</a> {% endif %}
+{% if query_result['CURPAGE'] > 1 %} <a href="/Query?pageNo={{ query_result['CURPAGE'] - 1 }}&val1={{ val1 }}">上一页</a> {% endif %}
+<span>{{ query_result['CURPAGE'] }}/{{ query_result['PAGES']}}</span>
+{% if query_result['CURPAGE'] > 1 %} <a href="/Query?pageNo=1&val1={{ val1 }}">第一页</a> {% endif %}
+</p>
 {% endblock %}

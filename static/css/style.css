@@ -80,6 +80,22 @@ dd {
     border-bottom: 1px solid #ccc;
 }
 
+.green_text {
+	color: green;
+}
+
+.red_text {
+	color: red;
+}
+
+.result_dl {
+	margin: 5px 0;
+}
+
+.result_dd {
+	padding-bottom: 5px;
+}
+
 #footer {
     border-top: 1px solid #f0f0f0;
     padding: 6px 10px;
