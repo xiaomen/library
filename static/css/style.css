@@ -1,104 +1,140 @@
 * {
-    margin: 0;
-    padding: 0;
+    padding: 0px;
+    margin: 0px;
 }
 
-.clearfix:before, .clearfix:after {
-    content: "";
-    display: table;
-}
-
-.clearfix:after {
-    clear: both;
-}
-
-html {
-    background: #fff;
-}
-
-a {
-    text-decoration: none;
-    color: #3a86c7;
-}
-
-ul {
-    list-style: none;
-}
-
-#header {
-    background: url(http://sheep-farm.b0.upaiyun.com/account/static/img/bg.png);
-    height: 38px;
-    line-height: 38px;
-    padding: 10px;
+::selection {
+    background: rgba(44, 199, 255, 0.7);
     color: white;
 }
 
-#header h1 {
-    display: inline;
+input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {
+    color: #EFEFEF; 
+}
+input:-moz-placeholder, textarea:-moz-placeholder {
+    color: #EFEFEF; 
 }
 
-#header span {
-    margin-left: 10px;
-    font-weight: bold;
+
+body {
+    background: url('/static/img/bg.png') #edeae2 repeat-x top left;
+    font-family: "Helvetica Neue", "Luxi Sans", "DejaVu Sans", Tahoma, "Hiragino Sans GB", "Microsoft Yahei", STHeiti !important;
 }
 
-#nav {
-    border-top: 6px solid #3a86c7;
-    font-size: 14px;
+.header, .wrapper, .footer {
+    width: 960px;
+    margin: 0 auto;
 }
 
-.content {
-	font-size: 14px;
-	margin:5px 0 0 10px;
+.logo {
+    margin-top: 20px;
+    margin-left: 30px;
 }
 
-#nav li {
-    position: relative;
-    float: left;
-    display: block;
-    height: 32px;
-    line-height: 36px;
-    width: 60px;
+.wrapper {
+    margin-top: 30px;
+}
+
+.subtitle {
+    text-align: right;
+}
+
+.subtitle h2 {
+    color: white;
+    font-weight: normal;
+    margin-right: 20px;
+}
+
+.body {
+    background-color: white;
+    padding: 30px;
+    min-height: 300px; 
+}
+
+.wrap {
+    margin: 0 auto;
+}
+
+.intro td {
+    padding-left: 30px;
+}
+
+.intro td h2 {
+    font-weight: normal;
+}
+
+.slogan {
+    color: #AAA;
     text-align: center;
+    margin-bottom: 30px;
+    font-size: 26px;
 }
 
-#nav li.select::before {
-    position: absolute;
-    content: "";
-    background: #79add0;
-    width: 60px;
-    height: 6px;
-    top: -6px;
-}
-
-#nav li.select a {
-    color: #3a86c7;
-    font-weight: bold;
-}
-
-dd {
-    border-bottom: 1px solid #ccc;
-}
-
-.green_text {
-	color: green;
-}
-
-.red_text {
-	color: red;
-}
-
-.result_dl {
-	margin: 5px 0;
-}
-
-.result_dd {
-	padding-bottom: 5px;
-}
-
-#footer {
-    border-top: 1px solid #f0f0f0;
-    padding: 6px 10px;
+.footer {
+    color: #CCC;
+    text-align: right;
     font-size: 12px;
-    color: #ccc;
+    margin-top: 10px;
+}
+
+.breadcrumb {
+    height: 40px; 
+    line-height: 40px; 
+    font-size: 14px; 
+    background-color: #2CC7FF; 
+    padding-left: 30px; 
+}
+
+.breadcrumb .sep:after {
+    content: "/"; 
+    color: #EEE; 
+    margin: 0 10px; 
+}
+
+.breadcrumb a {
+    color: white; 
+    text-decoration: none; 
+}
+
+.search-form {
+    background-color: #7fd2f0; 
+    height: 44px; 
+    line-height: 44px; 
+    width: 800px; 
+    margin: 0 auto; 
+    position: relative; 
+    margin-top: 30px; 
+}
+
+.search-form .search-input {
+    border: none; 
+    height: 44px; 
+    background-color: transparent;  
+    color: white; 
+    padding-left: 10px; 
+    font-size: 26px; 
+    outline: none; 
+    margin: 0; 
+    width: 90%; 
+    margin-right: 50px; 
+}
+
+.search-form .search-btn {
+    width: 44px; 
+    height: 44px; 
+    margin: 0; 
+    border: none; 
+    background: transparent; 
+    background-image: url('/static/img/search-icon.png'); 
+    outline: none; 
+    position: absolute; 
+    right: 0; 
+    top: 0; 
+}
+
+.search-intro {
+    text-align: center; 
+    color: #CCC; 
+    font-size: 14px; 
+    margin-top: 20px; 
 }

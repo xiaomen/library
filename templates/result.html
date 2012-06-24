@@ -1,5 +1,10 @@
 {% extends "index.html" %}
-{% block content %}
+
+{% block breadcrumb %}
+<span><a href="/">校门口</a></span><span class="sep"></span><span><a href="/">图书馆</a></span><span class="sep"></span><span>{{ val1 }}</span>
+{% endblock %}
+
+{% block body %}
 
 {% for book in query_result.book_list %}
 <dl class="result_dl">
