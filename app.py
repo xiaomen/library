@@ -67,7 +67,8 @@ class Query:
                 return json.dumps(query_result)
             return jinja_env.get_template('result.html').render(
                 query_result=query_result,
-                val1=urllib.quote(user_data['val1']),
+                val1=urllib.quote(user_data['val1']), 
+                query_val=user_data['val1'], 
                 pageNo=user_data['pageNo'])
         except:
             return jinja_env.get_template('500.html').render()

@@ -5,16 +5,7 @@
 {% endblock %}
 
 {% block body %}
-<div class="search-form">
-    <form method="get" action="/Query">
-        <input type="hidden" name="pageNo" value="1" />
-        <input class="search-input" type="text" name="val1"/>
-        <input class="search-btn" type="submit" value="" />
-    </form>
-</div>
-<div class="search-intro">
-    <p>请输入关键词搜索图书馆书籍</p>
-</div>
+{% include "search-form.html" %}
 {% endblock %}
 
 {% block subtitle %}图书馆{% endblock %}
