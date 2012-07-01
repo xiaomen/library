@@ -47,6 +47,32 @@ jinja_env = Environment(
 jinja_env.globals.update({})
 jinja_env.filters['s_files'] = static_files
 
+def get_page_nav(pages, now, query_val):
+    now = now - 1
+    dotdot = lambda a: "<li class=\"disabled\"><a href=\"#\">...</a></li>"
+    button = lambda page: "<li><a href=\"/Query?pageNo=%d&val1=%s\">%d</a></li>" % (page + 1, query_val, page + 1)
+    activebutton = lambda page: "<li class=\"active\"><a href=\"/Query?pageNo=%d&val1=%s\">%d</a></li>" % (page + 1, query_val, page + 1)
+    result = []
+    for i in range(pages if pages <= 4 else 4):
+        if i == now:
+            result.append(activebutton(i))
+        else:
+            result.append(button(i))
+    if now == 3 and pages > 4:
+        result.append(button(4))
+    if now > 3:
+        if now > 4:
+            result.append(dotdot(1))
+            result.append(button(now - 1))
+        result.append(activebutton(now))
+        if now + 1 < pages:
+            result.append(button(now + 1))
+    if pages - 1 > 3 and now + 1 < pages - 1:
+        result.append(dotdot(1))
+        result.append(button(pages - 1))
+    return result
+
+jinja_env.filters['get_page_nav'] = get_page_nav
 
 class Query:
     def GET(self, keyword='', page_no=''):
@@ -61,17 +87,18 @@ class Query:
         user_data['val1'] = util.html_unescape(user_data['val1'])
         if user_data['marcformat'] != 'all':
             user_data['marcformat'] = 'radiobutton'
-        try:
-            query_result = hnulib.new_search_book(user_data)
-            if len(keyword) * len(page_no) > 0:
-                return json.dumps(query_result)
-            return jinja_env.get_template('result.html').render(
-                query_result=query_result,
-                val1=urllib.quote(user_data['val1']), 
-                query_val=user_data['val1'], 
-                pageNo=user_data['pageNo'])
-        except:
-            return jinja_env.get_template('500.html').render()
+#        try:
+        query_result = hnulib.new_search_book(user_data)
+        print query_result
+        if len(keyword) * len(page_no) > 0:
+            return json.dumps(query_result)
+        return jinja_env.get_template('result.html').render(
+            query_result=query_result,
+            val1=urllib.quote(user_data['val1']), 
+            query_val=user_data['val1'].decode("utf-8"), 
+            pageNo=user_data['pageNo'])
+#        except:
+#            return jinja_env.get_template('500.html').render()
 
     def calc_book_type_value(self, user_data):
         words = {'1': u'图书', '2': u'期刊', '3': u'非书资料',
@@ -113,6 +140,7 @@ class QueryDetail:
             return jinja_env.get_template('detail.html').render(
                     book=book,
                     pageNo=user_data['pageNo'],
+                    query_val=user_data['val1'].decode("utf-8"), 
                     val1=urllib.quote(user_data['val1']))
         except:
             return jinja_env.get_template('500.html').render()

@@ -9,6 +9,10 @@
 <div class="search-result-title">
     <h2>搜索结果</h2>
 </div>
+<div class="search-meta">
+    <p>共查询到 {{ query_result.TOTALROWS }} 条结果，当前第 {{ query_result.CURPAGE }} 页，共 {{ query_result.PAGES }} 页。</p>
+</div>
+{% if query_result.book_list %}
 <div class="search-result">
     <ul class="search-result-list">
 {% for book in query_result.book_list %}
@@ -41,10 +45,22 @@
 {% endfor %}
     </ul>
 </div>
-<p>
-{% if query_result['CURPAGE'] < query_result['PAGES'] %} <a href="/Query?pageNo={{ query_result['CURPAGE'] + 1 }}&val1={{ val1 }}">下一页</a> {% endif %}
-{% if query_result['CURPAGE'] > 1 %} <a href="/Query?pageNo={{ query_result['CURPAGE'] - 1 }}&val1={{ val1 }}">上一页</a> {% endif %}
-<span>{{ query_result['CURPAGE'] }}/{{ query_result['PAGES']}}</span>
-{% if query_result['CURPAGE'] > 1 %} <a href="/Query?pageNo=1&val1={{ val1 }}">第一页</a> {% endif %}
-</p>
+<div class="pagination pagination-centered">
+    <ul>
+        <li {% if query_result['CURPAGE'] == 1 %}class="disabled"{% endif %}><a href="/Query?pageNo={{ query_result['CURPAGE'] - 1 }}&val1={{ val1 }}">«</a></li>
+        {% for li in query_result['PAGES'] | get_page_nav(query_result['CURPAGE'], val1) %}
+        {{ li }}
+        {% endfor %}
+        {% if query_result['PAGES'] == query_result['CURPAGE'] %}
+        <li class="disabled"><a href="#">»</a></li>
+        {% else %}
+        <li><a href="/Query?pageNo={{ query_result['CURPAGE'] + 1 }}&val1={{ val1 }}">»</a></li>
+        {% endif %}
+    </ul>
+</div>
+{% else %}
+<div class="no-result">
+    <p>Ooops... 什么也没有找到，试试其他的关键词？</p>
+</div>
+{% endif %}
 {% endblock %}

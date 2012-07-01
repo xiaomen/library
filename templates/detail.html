@@ -1,5 +1,16 @@
-{% extends "index.html" %}
-{% block content %}
+{% extends "layout.html" %}
+
+{% block breadcrumb %}
+<span><a href="/">校门口</a></span>
+<span class="sep"></span>
+<span><a href="/">图书馆</a></span>
+<span class="sep"></span>
+<span><a href="/Query?pageNo={{ pageNo }}&val1={{ val1 }}">{{ query_val | e }}</a></span>
+<span class="sep"></span>
+<span>{{ book.name | e }}</span>
+{% endblock %}
+
+{% block body %}
 <div style="border-bottom: 1px solid #ccc;">
 	<h3>{{ book.name }}</h3>
 	<p>作者：{{ book.author }}</p>
