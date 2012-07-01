@@ -1,22 +1,61 @@
-{% extends "index.html" %}
-{% block content %}
-<div style="border-bottom: 1px solid #ccc;">
-	<h3>{{ book.name }}</h3>
-	<p>作者：{{ book.author }}</p>
-	<p>出版社：{{ book.publisher }}</p>
-	<p>出版日期：{{ book.publish_date }}</p>
-	<p>ISBN: {{ book.isbn }}</p>
+{% extends "layout.html" %}
+
+{% block breadcrumb %}
+<span><a href="/">校门口</a></span>
+<span class="sep"></span>
+<span><a href="/">图书馆</a></span>
+<span class="sep"></span>
+<span><a href="/Query?pageNo={{ pageNo }}&val1={{ val1 }}">{{ query_val | e }}</a></span>
+<span class="sep"></span>
+<span>{{ book.name | e }}</span>
+{% endblock %}
+
+{% block body %}
+<div class="back-to-result">
+    <a href="/Query?pageNo={{ pageNo }}&val1={{ val1 }}">« 返回搜索结果</a>
 </div>
-<div>
-	<p>索书号：{{ book.callno }}</p>
-	<p>馆藏状态：</p>
-	<ol style="margin-left:28px;">
-		{% for detail in book.detail_list %}
-		<li>
-			{{ detail['STATE'] }} / {{ detail['CURLOCAL'] }} {% if detail.has_key('RETURNDATE') %} / {{ detail['RETURNDATE'] }} {% endif %}
-		</li>
-		{% endfor %}
-	</ol>
-	<a href="/Query?pageNo={{ pageNo }}&val1={{ val1 }}">返回搜索结果</a>
+<div class="book-detail">
+    <table class="book-detail-table">
+        <tr>
+            <th colspan="2" class="book-detail-title">书籍信息</th>
+        </tr>
+        <tr>
+            <th>书名</th>
+            <td>{{ book.name }}</td>
+        </tr>
+        <tr>
+            <th>作者</th>
+            <td>{{ book.author }}</td>
+        </tr>
+        <tr>
+            <th>出版社</th>
+            <td>{{ book.publisher }}</td>
+        </tr>
+        <tr>
+            <th>出版日期</th>
+            <td>{{ book.publish_date }}</td>
+        </tr>
+        <tr>
+            <th>ISBN</th>
+            <td>{{ book.isbn }}</td>
+        </tr>
+        <tr>
+            <th colspan="2" class="book-detail-title">馆藏信息</th>
+        </tr>
+        <tr>
+            <th>索书号</th>
+            <td>{{ book.callno }}</td>
+        </tr>
+        <tr>
+            <th>馆藏状态</th>
+            <td>
+                <ol>
+                    {% for detail in book.detail_list %}
+                    <li>{{ detail['STATE'] }} / {{ detail['CURLOCAL'] }} {% if detail.has_key('RETURNDATE') %} / {{ detail['RETURNDATE'] }} {% endif %}</li>
+                    {% endfor %}
+                </ol>
+            </td>
+        </tr>
+    </table>
 </div>
 {% endblock %}
