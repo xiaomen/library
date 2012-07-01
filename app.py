@@ -87,18 +87,17 @@ class Query:
         user_data['val1'] = util.html_unescape(user_data['val1'])
         if user_data['marcformat'] != 'all':
             user_data['marcformat'] = 'radiobutton'
-#        try:
-        query_result = hnulib.new_search_book(user_data)
-        print query_result
-        if len(keyword) * len(page_no) > 0:
-            return json.dumps(query_result)
-        return jinja_env.get_template('result.html').render(
-            query_result=query_result,
-            val1=urllib.quote(user_data['val1']), 
-            query_val=user_data['val1'].decode("utf-8"), 
-            pageNo=user_data['pageNo'])
-#        except:
-#            return jinja_env.get_template('500.html').render()
+        try:
+            query_result = hnulib.new_search_book(user_data)
+            if len(keyword) * len(page_no) > 0:
+                return json.dumps(query_result)
+            return jinja_env.get_template('result.html').render(
+                query_result=query_result,
+                val1=urllib.quote(user_data['val1']), 
+                query_val=user_data['val1'].decode("utf-8"), 
+                pageNo=user_data['pageNo'])
+        except:
+            return jinja_env.get_template('500.html').render()
 
     def calc_book_type_value(self, user_data):
         words = {'1': u'图书', '2': u'期刊', '3': u'非书资料',
