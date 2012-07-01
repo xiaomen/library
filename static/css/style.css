@@ -235,3 +235,54 @@ body {
     color: #999; 
     font-size: 13px; 
 }
+
+/*
+ * Book Detail
+ */
+
+.book-detail {
+    margin: 0 30px; 
+}
+
+.book-detail-table {
+    width: 100%; 
+}
+
+.book-detail-table th {
+    text-align: left; 
+    font-size: 15px; 
+}
+
+.book-detail-table th, .book-detail-table td {
+    padding: 5px; 
+    padding-left: 10px; 
+    vertical-align: top; 
+}
+
+.book-detail-table tr {
+    height: 30px; 
+    line-height: 30px; 
+}
+
+.book-detail-title {
+    background-color: #EFEFEF; 
+    font-size: 17px !important; 
+}
+
+.book-detail ol {
+    margin: 0; 
+    -webkit-padding-start: 0; 
+    list-style-position: inside; 
+
+}
+
+.back-to-result {
+    margin-left: 20px; 
+    margin-bottom: 20px; 
+}
+
+.back-to-result a{
+    text-decoration: none; 
+    color: #999; 
+    font-size: 14px; 
+}
