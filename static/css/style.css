@@ -17,7 +17,7 @@ input:-moz-placeholder, textarea:-moz-placeholder {
 
 
 body {
-    background: url('/static/img/bg.png') #edeae2 repeat-x top left;
+    background: url('/library/static/img/bg.png') #edeae2 repeat-x top left;
     font-family: "Helvetica Neue", "Luxi Sans", "DejaVu Sans", Tahoma, "Hiragino Sans GB", "Microsoft Yahei", STHeiti !important;
 }
 
@@ -126,7 +126,7 @@ body {
     margin: 0; 
     border: none; 
     background: transparent; 
-    background-image: url('/static/img/search-icon.png'); 
+    background-image: url('/library/static/img/search-icon.png'); 
     outline: none; 
     position: absolute; 
     right: 0; 
@@ -141,7 +141,7 @@ body {
 }
 
 .search-result-title {
-    background: url('/static/img/before-icon-search.png') no-repeat center left; 
+    background: url('/library/static/img/before-icon-search.png') no-repeat center left; 
     padding-left: 50px; 
     margin-left: 50px; 
 }
