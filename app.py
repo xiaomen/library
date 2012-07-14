@@ -82,7 +82,7 @@ def get_page_nav(pages, now, query_val):
 
 jinja_env.filters['get_page_nav'] = get_page_nav
 
-Session = scoped_session(sessionmaker(bind=engine))
+Session = 
 
 web.config.debug = False
 app = web.application(urls, globals())
@@ -99,7 +99,7 @@ def get_current_user():
 
 def insert_search_record(uid, value):
     logger.info("insert search record(%d, %s)." % (uid, value))
-    session = Session()
+    session = scoped_session(sessionmaker(bind=engine))
     records = session.query(SearchRecord).filter_by(uid=uid).order_by(SearchRecord.time)
     if records.count() == 15:
         session.delete(records.first())
@@ -115,7 +115,7 @@ class Query:
             user_data['val1'] = keyword
             user_data['pageNo'] = page_no
 
-        uid = get_current_user()
+        uid = 2#get_current_user()
         if uid != None:
             insert_search_record(int(uid), user_data['val1'])
         else:
