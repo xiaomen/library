@@ -82,8 +82,6 @@ def get_page_nav(pages, now, query_val):
 
 jinja_env.filters['get_page_nav'] = get_page_nav
 
-Session = 
-
 web.config.debug = False
 app = web.application(urls, globals())
 wsgi_app = SessionMiddleware(app.wsgifunc(), \
