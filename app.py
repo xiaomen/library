@@ -84,6 +84,7 @@ jinja_env.filters['get_page_nav'] = get_page_nav
 
 Session = scoped_session(sessionmaker(bind=engine))
 
+web.config.debug = False
 app = web.application(urls, globals())
 wsgi_app = SessionMiddleware(app.wsgifunc(), \
         FilesystemSessionStore(), \
