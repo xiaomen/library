@@ -91,7 +91,7 @@ def get_current_user():
     web_session = web.ctx.env['xiaomen.session']
     if not web_session or not web_session.get('user_id') or not web_session.get('user_token'):
         return None
-    return session['user_id']
+    return web_session['user_id']
 
 def insert_search_record(uid, value):
     session = Session()
