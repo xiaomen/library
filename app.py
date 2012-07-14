@@ -86,9 +86,9 @@ wsgi_app = SessionMiddleware(app.wsgifunc(), \
         FilesystemSessionStore(), \
         cookie_name="xid", cookie_path="/", \
         cookie_domain=".xiaomen.co")
-web_session = web.session.Session(app, web.session.DiskStore('sessions'), initializer={})
 
 def get_current_user():
+    web_session = web.ctx.env['xiaomen.session']
     if not web_session or not web_session.get('user_id') or not web_session.get('user_token'):
         return None
     return session['user_id']
