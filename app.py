@@ -112,7 +112,7 @@ class Query:
 
         uid = get_current_user()
         if uid != None:
-            insert_search_record(uid, user_data['val1'])
+            insert_search_record(int(uid), user_data['val1'])
 
         user_data['filter'] = self.calc_filter_value(user_data)
         user_data['bookType'] = self.calc_book_type_value(user_data)
