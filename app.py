@@ -4,6 +4,7 @@ import os
 import web
 import json
 import urllib
+import logging
 from datetime import datetime
 from sheep.api.statics import static_files
 from sheep.api.sessions import SessionMiddleware, FilesystemSessionStore
@@ -14,6 +15,8 @@ import hnulib
 import util
 
 from models import *
+
+logger = logging.getLogger(__name__)
 
 params = {
         "col1": "marc",
@@ -94,8 +97,9 @@ def get_current_user():
     return web_session['user_id']
 
 def insert_search_record(uid, value):
+    logger.info("insert search record(%d, %s)." % (uid, value))
     session = Session()
-    records = session.query(SearchRecord).order_by(SearchRecord.time)
+    records = session.query(SearchRecord).filter_by(uid=uid).order_by(SearchRecord.time)
     if records.count() == 15:
         session.delete(records.first())
     session.add(SearchRecord(uid, value, datetime.now()))
@@ -113,6 +117,8 @@ class Query:
         uid = get_current_user()
         if uid != None:
             insert_search_record(int(uid), user_data['val1'])
+        else:
+            logger.info("no user in session.")
 
         user_data['filter'] = self.calc_filter_value(user_data)
         user_data['bookType'] = self.calc_book_type_value(user_data)
