@@ -96,7 +96,6 @@ def get_current_user():
     return web_session['user_id']
 
 def insert_search_record(uid, value):
-    logger.info("insert search record(%d, %s)." % (uid, value))
     session = scoped_session(sessionmaker(bind=engine))
     records = session.query(SearchRecord).filter_by(uid=uid).order_by(SearchRecord.time)
     if records.count() == 15:
@@ -113,8 +112,9 @@ class Query:
             user_data['val1'] = keyword
             user_data['pageNo'] = page_no
 
-        uid = 2#get_current_user()
+        uid = get_current_user()
         if uid != None:
+            logger.info("insert search record(%s, %s)." % (uid, value))
             insert_search_record(int(uid), user_data['val1'])
         else:
             logger.info("no user in session.")
