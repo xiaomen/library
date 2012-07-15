@@ -114,7 +114,7 @@ class Query:
 
         uid = get_current_user()
         if uid != None:
-            logger.info("insert search record(%s, %s)." % (uid, value))
+            logger.info("insert search record(%s, %s)." % (uid, user_data['val1']))
             insert_search_record(int(uid), user_data['val1'])
         else:
             logger.info("no user in session.")
