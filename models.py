@@ -2,7 +2,7 @@ from sqlalchemy import create_engine
 from sqlalchemy import Column, Integer, String, DateTime
 from sqlalchemy.ext.declarative import declarative_base
 
-engine = create_engine('mysql://', echo=True)
+engine = create_engine('mysql://', echo=True, pool_recycle=3600)
 
 Base = declarative_base()
 class SearchRecord(Base):
