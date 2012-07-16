@@ -153,7 +153,7 @@ class Query:
 
 class UserSample:
     def GET(self):
-        user = get_current_user()
+        user = util.get_current_user()
         if not user:
             return 'No user in session'
         return '%s %s' % (user.get('name', ''), user.get('uid', 0))
