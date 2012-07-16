@@ -45,6 +45,7 @@ urls = (
     '/Query', 'Query',
     '/QueryDetail/(.*)', 'QueryDetail',
     '/QueryDetail', 'QueryDetail',
+    '/current_user', 'UserSample',
     '/.*', 'QueryPage',
 )
 
@@ -157,6 +158,14 @@ class Query:
         if user_data['hasholding'] == 'y':
             q = q + ' AND (hasholding:y)'
         return q
+
+class UserSample:
+    def GET(self):
+        uid = get_current_user()
+        if not uid:
+            return 'No user in session'
+        user = util.get_user(uid)
+        return '%s %s' % (user.get('name', ''), user.get('uid', 0))
 
 class QueryPage:
     def GET(self):
