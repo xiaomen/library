@@ -1,4 +1,5 @@
 import json
+import urllib2
 
 html_escape_table = {
     "&": "&amp;",
