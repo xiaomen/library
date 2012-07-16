@@ -4,11 +4,19 @@ import os
 import web
 import json
 import urllib
+import logging
+from datetime import datetime
 from sheep.api.statics import static_files
+from sheep.api.sessions import SessionMiddleware, FilesystemSessionStore
 from jinja2 import Environment, FileSystemLoader
+from sqlalchemy.orm import scoped_session, sessionmaker
 
 import hnulib
 import util
+
+from models import *
+
+logger = logging.getLogger(__name__)
 
 params = {
         "col1": "marc",
@@ -74,6 +82,28 @@ def get_page_nav(pages, now, query_val):
 
 jinja_env.filters['get_page_nav'] = get_page_nav
 
+web.config.debug = False
+app = web.application(urls, globals())
+wsgi_app = SessionMiddleware(app.wsgifunc(), \
+        FilesystemSessionStore(), \
+        cookie_name="xid", cookie_path="/", \
+        cookie_domain=".xiaomen.co")
+
+def get_current_user():
+    web_session = web.ctx.env['xiaomen.session']
+    if not web_session or not web_session.get('user_id') or not web_session.get('user_token'):
+        return None
+    return web_session['user_id']
+
+def insert_search_record(uid, value):
+    session = scoped_session(sessionmaker(bind=engine))
+    records = session.query(SearchRecord).filter_by(uid=uid).order_by(SearchRecord.time)
+    if records.count() == 15:
+        session.delete(records.first())
+    session.add(SearchRecord(uid, value, datetime.now()))
+    session.commit()
+    session.close()
+
 class Query:
     def GET(self, keyword='', page_no=''):
         user_data = web.input()
@@ -81,6 +111,14 @@ class Query:
         if len(keyword) * len(page_no) > 0:
             user_data['val1'] = keyword
             user_data['pageNo'] = page_no
+
+        uid = get_current_user()
+        if uid != None:
+            logger.info("insert search record(%s, %s)." % (uid, user_data['val1']))
+            insert_search_record(int(uid), user_data['val1'])
+        else:
+            logger.info("no user in session.")
+
         user_data['filter'] = self.calc_filter_value(user_data)
         user_data['bookType'] = self.calc_book_type_value(user_data)
         user_data['marcType'] = self.calc_marc_type_value(user_data)
@@ -144,8 +182,6 @@ class QueryDetail:
         except:
             return jinja_env.get_template('500.html').render()
 
-app = web.application(urls, globals())
-wsgi_app = app.wsgifunc()
 
 if __name__ == "__main__":
     app.run()
