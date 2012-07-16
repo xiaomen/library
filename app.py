@@ -45,6 +45,7 @@ urls = (
     '/Query', 'Query',
     '/QueryDetail/(.*)', 'QueryDetail',
     '/QueryDetail', 'QueryDetail',
+    '/current_user', 'UserSample',
     '/.*', 'QueryPage',
 )
 
@@ -89,11 +90,6 @@ wsgi_app = SessionMiddleware(app.wsgifunc(), \
         cookie_name="xid", cookie_path="/", \
         cookie_domain=".xiaomen.co")
 
-def get_current_user():
-    web_session = web.ctx.env['xiaomen.session']
-    if not web_session or not web_session.get('user_id') or not web_session.get('user_token'):
-        return None
-    return web_session['user_id']
 
 def insert_search_record(uid, value):
     session = scoped_session(sessionmaker(bind=engine))
@@ -112,12 +108,9 @@ class Query:
             user_data['val1'] = keyword
             user_data['pageNo'] = page_no
 
-        uid = get_current_user()
+        uid = util.get_current_uid()
         if uid != None:
-            logger.info("insert search record(%s, %s)." % (uid, user_data['val1']))
-            insert_search_record(int(uid), user_data['val1'])
-        else:
-            logger.info("no user in session.")
+            insert_search_record(uid, user_data['val1'])
 
         user_data['filter'] = self.calc_filter_value(user_data)
         user_data['bookType'] = self.calc_book_type_value(user_data)
@@ -157,6 +150,13 @@ class Query:
         if user_data['hasholding'] == 'y':
             q = q + ' AND (hasholding:y)'
         return q
+
+class UserSample:
+    def GET(self):
+        user = util.get_current_user()
+        if not user:
+            return 'No user in session'
+        return '%s %s' % (user.get('name', ''), user.get('uid', 0))
 
 class QueryPage:
     def GET(self):
