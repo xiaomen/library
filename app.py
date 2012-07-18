@@ -170,17 +170,18 @@ class QueryDetail:
         user_data = dict(user_data, **detail_params) 
         if len(book_rec_no) > 0:
             user_data['bookrecno'] = book_rec_no
-        try:
-            book = hnulib.get_book_detail_info(user_data)
-            if len(book_rec_no) > 0:
-                return json.dumps(book)
-            return jinja_env.get_template('detail.html').render(
-                    book=book,
-                    pageNo=user_data['pageNo'],
-                    query_val=user_data['val1'].decode("utf-8"), 
-                    val1=urllib.quote(user_data['val1']))
-        except:
-            return jinja_env.get_template('500.html').render()
+        book = hnulib.get_book_detail_info(user_data)
+        if len(book_rec_no) > 0:
+            return json.dumps(book)
+        book['borrow_count'] = 0
+        for d in book['detail_list']:
+            if d['STATE'] == u'在馆':
+                book['borrow_count'] = book['borrow_count'] + 1
+        return jinja_env.get_template('detail.html').render(
+                book=book,
+                pageNo=user_data['pageNo'],
+                query_val=user_data['val1'].decode("utf-8"), 
+                val1=urllib.quote(user_data['val1']))
 
 
 if __name__ == "__main__":
