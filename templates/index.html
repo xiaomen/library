@@ -1,9 +1,6 @@
 {% extends "layout.html" %}
 
-{% block breadcrumb %}
-<span><a href="/">校门口</a></span><span class="sep"></span><span>图书馆</span>
-{% endblock %}
-
-{% block body %}
-{% include "search-form.html" %}
+{% block content %}
+<div class="index-sep"></div>
+{% include 'search-form.html' %}
 {% endblock %}

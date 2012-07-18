@@ -1,66 +1,38 @@
-{% extends "index.html" %}
+{% extends "layout.html" %}
 
-{% block breadcrumb %}
-<span><a href="/">校门口</a></span><span class="sep"></span><span><a href="/">图书馆</a></span><span class="sep"></span><span>{{ query_val | e }}</span>
-{% endblock %}
-
-{% block body %}
-{% include "search-form.html" %}
-<div class="search-result-title">
-    <h2>搜索结果</h2>
-</div>
-<div class="search-meta">
-    <p>共查询到 {{ query_result.TOTALROWS }} 条结果，当前第 {{ query_result.CURPAGE }} 页，共 {{ query_result.PAGES }} 页。</p>
+{% block content %}
+{% include 'search-form.html' %}
+<div class="result-title">
+    <h2>结果列表</h2>
 </div>
 {% if query_result.book_list %}
-<div class="search-result">
-    <ul class="search-result-list">
-{% for book in query_result.book_list %}
-<li class="result_dl">
-    <table class="result-row">
-        <tr>
-            <td>
-                {% if book["BORROW"] %}<span class="sign green-sign">可借</span>{% else %}<span class="sign red-sign">不可借</span>{% endif %}
-                <a href="/QueryDetail?pageNo={{ pageNo }}&val1={{ val1 }}&bookrecno={{ book['BOOKRECNO'] }}" class="result-title">{{ book['TITLE'] }}</a>
-            </td>
-        </tr>
-        <tr>
-            <td class="book-meta">
-		{% if book.CALLNO|length > 0 %}
-		{{ book.CALLNO }} /
-		{% endif %}
-		{% if book.AUTHOR|length > 0 %}
-		{{ book.AUTHOR }} /
-		{% endif %}
-        <br />
-		{% if book.PUBLISHER|length > 0 %}
-		{{ book.PUBLISHER }} /
-		{% endif %}
-		{% if book.PUBDATE|length > 0 %}
-		{{ book.PUBDATE }}
-		{% endif %}
-            </td>
-        </tr>
-    </table>
-{% endfor %}
-    </ul>
-</div>
-<div class="pagination pagination-centered">
-    <ul>
-        <li {% if query_result['CURPAGE'] == 1 %}class="disabled"{% endif %}><a href="/Query?pageNo={{ query_result['CURPAGE'] - 1 }}&val1={{ val1 }}">«</a></li>
-        {% for li in query_result['PAGES'] | get_page_nav(query_result['CURPAGE'], val1) %}
-        {{ li }}
+<div class="result-list">
+    <ol class="book-list">
+        {% for book in query_result.book_list %}
+        <li class="search-book">
+            {% if book["BORROW"] %}<span class="sign green-sign">可　借</span>{% else %}<span class="sign red-sign">不可借</span>{% endif %}
+            <div class="book-name"><a href="/QueryDetail?pageNo={{ pageNo }}&val1={{ val1 }}&bookrecno={{ book['BOOKRECNO'] }}" class="book-title">{{ book['TITLE'] }}</a>&nbsp;&nbsp;&nbsp;索书号：{{ book.CALLNO }}</div>
+            <div class="book-detail">
+                <p>著者：<a href="/Query?pageNo=1&val1={{ book.AUTHOR }}">{{ book.AUTHOR }}</a></p>
+                <p>出版社：<a href="/Query?pageNo=1&val1={{ book.PUBLISHER }}">{{ book.PUBLISHER }}</a></p>
+                <p>出版日期：{{ book.PUBDATE }}</p>
+            </div>
+        </li>
         {% endfor %}
-        {% if query_result['PAGES'] == query_result['CURPAGE'] %}
-        <li class="disabled"><a href="#">»</a></li>
-        {% else %}
-        <li><a href="/Query?pageNo={{ query_result['CURPAGE'] + 1 }}&val1={{ val1 }}">»</a></li>
+    </ol>
+</div>
+<div class="pagination-wrap">
+    <ul class="pagination">
+        {% if query_result.CURPAGE != 1 %}
+        <li><a href="/Query?pageNo=1&val1={{ val1 }}">第一页</a></li>
+        <li><a href="/Query?pageNo={{ query_result.CURPAGE - 1 }}&val1={{ val1 }}">上一页</a></li>
+        {% endif %}
+        <li>(&nbsp;{{ query_result.CURPAGE }}&nbsp;/&nbsp;{{ query_result.PAGES }}&nbsp;)</li>
+        {% if query_result.CURPAGE != query_result.PAGES %}
+        <li><a href="/Query?pageNo={{ query_result.CURPAGE + 1 }}&val1={{ val1 }}">下一页</a></li>
+        <li><a href="/Query?pageNo={{ query_result.PAGES }}&val1={{ val1 }}">最后页</a></li>
         {% endif %}
     </ul>
-</div>
-{% else %}
-<div class="no-result">
-    <p>Ooops... 什么也没有找到，试试其他的关键词？</p>
 </div>
 {% endif %}
 {% endblock %}
