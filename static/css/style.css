@@ -4,7 +4,7 @@
 
 .search-form {
     margin-top: 20px; 
-    background: url('/static/img/before-search-input.png') no-repeat left center;
+    background: url('/library/static/img/before-search-input.png') no-repeat left center;
     padding-left: 70px; 
 }
 
@@ -31,7 +31,7 @@
 
 .search-form .search-btn {
     background: transparent; 
-    background: url('/static/img/search-btn.png') no-repeat center; 
+    background: url('/library/static/img/search-btn.png') no-repeat center; 
     position: absolute; 
     right: 10px; 
     top: 3px; 
@@ -89,7 +89,7 @@
 
 .result-title {
     margin-top: 60px; 
-    background: url('/static/img/arrow.png') no-repeat left center; 
+    background: url('/library/static/img/arrow.png') no-repeat left center; 
 }
 
 .result-title h2 {
