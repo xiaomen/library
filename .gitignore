@@ -1,2 +1,5 @@
 *.pyc
 venv/
+pip-download/
+pip-req.txt
+dev.yaml
