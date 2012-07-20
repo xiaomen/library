@@ -31,6 +31,16 @@
             </tr>
         </table>
     </div>
+    <div class="result-title">
+        <h2>馆藏状态</h2>
+    </div>
+    <div class="result-body">
+        <ol class="book-status">
+            {% for detail in book.detail_list %}
+            <li>{{ detail['STATE'] }} / {{ detail['CURLOCAL'] }} {% if detail.has_key('RETURNDATE') %} / {{ detail['RETURNDATE'] }} {% endif %}</li>
+            {% endfor %}
+        </ol>
+    </div>
     <div class="back-btn">
         <a href="/Query?pageNo={{ pageNo }}&val1={{ val1 }}">返回结果列表</a>
     </div>
