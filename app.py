@@ -4,13 +4,22 @@ import os
 import web
 import json
 import urllib
+import logging
+from datetime import datetime
 from sheep.api.statics import static_files
+from sheep.api.sessions import SessionMiddleware, FilesystemSessionStore
 from jinja2 import Environment, FileSystemLoader
+
 from functools import wraps
 from werkzeug.useragents import UserAgent
+from sqlalchemy.orm import scoped_session, sessionmaker
 
 import hnulib
 import util
+
+from models import *
+
+logger = logging.getLogger(__name__)
 
 params = {
         "col1": "marc",
@@ -39,6 +48,7 @@ urls = (
     '/Query', 'Query',
     '/QueryDetail/(.*)', 'QueryDetail',
     '/QueryDetail', 'QueryDetail',
+    '/current_user', 'UserSample',
     '/.*', 'QueryPage',
 )
 
@@ -89,6 +99,23 @@ def get_page_nav(pages, now, query_val):
 
 jinja_env.filters['get_page_nav'] = get_page_nav
 
+web.config.debug = False
+app = web.application(urls, globals())
+wsgi_app = SessionMiddleware(app.wsgifunc(), \
+        FilesystemSessionStore(), \
+        cookie_name="xid", cookie_path="/", \
+        cookie_domain=".xiaomen.co")
+
+
+def insert_search_record(uid, value):
+    session = scoped_session(sessionmaker(bind=engine))
+    records = session.query(SearchRecord).filter_by(uid=uid).order_by(SearchRecord.time)
+    if records.count() == 15:
+        session.delete(records.first())
+    session.add(SearchRecord(uid, value, datetime.now()))
+    session.commit()
+    session.close()
+
 class Query:
     @check_ua
     def GET(self, keyword='', page_no=''):
@@ -97,6 +124,11 @@ class Query:
         if len(keyword) * len(page_no) > 0:
             user_data['val1'] = keyword
             user_data['pageNo'] = page_no
+
+        uid = util.get_current_uid()
+        if uid != None:
+            insert_search_record(uid, user_data['val1'])
+
         user_data['filter'] = self.calc_filter_value(user_data)
         user_data['bookType'] = self.calc_book_type_value(user_data)
         user_data['marcType'] = self.calc_marc_type_value(user_data)
@@ -136,6 +168,13 @@ class Query:
             q = q + ' AND (hasholding:y)'
         return q
 
+class UserSample:
+    def GET(self):
+        user = util.get_current_user()
+        if not user:
+            return 'No user in session'
+        return '%s %s' % (user.get('name', ''), user.get('uid', 0))
+
 class QueryPage:
     @check_ua
     def GET(self):
@@ -163,8 +202,6 @@ class QueryDetail:
                 query_val=user_data['val1'].decode("utf-8"), 
                 val1=urllib.quote(user_data['val1']))
 
-app = web.application(urls, globals())
-wsgi_app = app.wsgifunc()
 
 if __name__ == "__main__":
     app.run()
