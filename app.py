@@ -9,6 +9,9 @@ from datetime import datetime
 from sheep.api.statics import static_files
 from sheep.api.sessions import SessionMiddleware, FilesystemSessionStore
 from jinja2 import Environment, FileSystemLoader
+
+from functools import wraps
+from werkzeug.useragents import UserAgent
 from sqlalchemy.orm import scoped_session, sessionmaker
 
 import hnulib
@@ -56,6 +59,19 @@ jinja_env = Environment(
 jinja_env.globals.update({})
 jinja_env.filters['s_files'] = static_files
 
+def check_ua(method):
+    @wraps(method)
+    def wrapper(self, *args, **kwargs):
+        ua = UserAgent(web.ctx.env['HTTP_USER_AGENT'])
+        if ua.browser == 'msie':
+            try:
+                if int(float(ua.version)) < 8:
+                    return jinja_env.get_template("noie.html").render()
+            except:
+                return jinja_env.get_template("noie.html").render()
+        return method(self, *args, **kwargs) 
+    return wrapper
+
 def get_page_nav(pages, now, query_val):
     now = now - 1
     dotdot = lambda a: "<li class=\"disabled\"><a href=\"#\">...</a></li>"
@@ -101,6 +117,7 @@ def insert_search_record(uid, value):
     session.close()
 
 class Query:
+    @check_ua
     def GET(self, keyword='', page_no=''):
         user_data = web.input()
         user_data = dict(user_data, **params) 
@@ -159,12 +176,14 @@ class UserSample:
         return '%s %s' % (user.get('name', ''), user.get('uid', 0))
 
 class QueryPage:
+    @check_ua
     def GET(self):
         return jinja_env.get_template('index.html').render()
 
 detail_params = {'cmdACT': 'detailmarc', 'xsl': 'listdetailmarc.xsl'}
 
 class QueryDetail:
+    @check_ua
     def GET(self, book_rec_no=''):
         user_data = web.input()
         user_data = dict(user_data, **detail_params) 
