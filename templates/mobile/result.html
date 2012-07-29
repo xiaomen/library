@@ -1,0 +1,38 @@
+{% extends "mobile/layout.html" %}
+
+{% block content %}
+{% include "mobile/search-form.html" %}
+<div class="result-title">
+    <h2>结果列表</h2>
+</div>
+{% if query_result.book_list %}
+<div class="result-list">
+    <ol class="book-list">
+        {% for book in query_result.book_list %}
+        <li class="search-book">
+            {% if book["BORROW"] %}<span class="sign green-sign">可　借</span>{% else %}<span class="sign red-sign">不可借</span>{% endif %}
+            <div class="book-name"><a href="/QueryDetail?pageNo={{ pageNo }}&val1={{ val1 }}&bookrecno={{ book['BOOKRECNO'] }}" class="book-title">{{ book['TITLE'] }}</a>&nbsp;&nbsp;&nbsp;索书号：{{ book.CALLNO }}</div>
+            <div class="book-detail">
+                <p>著者：<a href="/Query?pageNo=1&val1={{ book.AUTHOR }}">{{ book.AUTHOR }}</a></p>
+                <p>出版社：<a href="/Query?pageNo=1&val1={{ book.PUBLISHER }}">{{ book.PUBLISHER }}</a></p>
+                <p>出版日期：{{ book.PUBDATE }}</p>
+            </div>
+        </li>
+        {% endfor %}
+    </ol>
+</div>
+<div class="pagination-wrap">
+    <ul class="pagination">
+        {% if query_result.CURPAGE != 1 %}
+        <li><a href="/Query?pageNo=1&val1={{ val1 }}">第一页</a></li>
+        <li><a href="/Query?pageNo={{ query_result.CURPAGE - 1 }}&val1={{ val1 }}">上一页</a></li>
+        {% endif %}
+        <li>(&nbsp;{{ query_result.CURPAGE }}&nbsp;/&nbsp;{{ query_result.PAGES }}&nbsp;)</li>
+        {% if query_result.CURPAGE != query_result.PAGES %}
+        <li><a href="/Query?pageNo={{ query_result.CURPAGE + 1 }}&val1={{ val1 }}">下一页</a></li>
+        <li><a href="/Query?pageNo={{ query_result.PAGES }}&val1={{ val1 }}">最后页</a></li>
+        {% endif %}
+    </ul>
+</div>
+{% endif %}
+{% endblock %}
