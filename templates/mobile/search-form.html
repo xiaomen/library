@@ -1,0 +1,16 @@
+<div class="search">
+    <form method="get" action="/Query">
+        <input type="hidden" name="pageNo" value="1" />
+        <div class="search-wrap">
+            <div class="search-icon">
+                <input name="submit" type="submit" value="" />
+            </div>
+            <div class="search-input">
+                <input name="val1" type="text" {% if query_val %}value="{{ query_val }}" {% endif %}/> 
+            </div>
+        </div>
+    </form>
+</div>
+<div class="search-notice">
+    <p>请输入关键词搜索图书馆书籍</p>
+</div>
