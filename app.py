@@ -127,15 +127,16 @@ def get_hot_keys(top):
             group_by(SearchRecord.record).\
             order_by('record_count desc')
     count = session.query(SearchRecord).group_by(SearchRecord.record).count()
+    ret = records[:min(top, count)]
     session.close()
-    return records[:min(top, count)]
+    return ret
 
 def get_keywords_by_uid(uid):
     session = scoped_session(sessionmaker(bind=engine))
     records = session.query(SearchRecord).filter_by(uid=uid).\
-            order_by(SearchRecord.time)
+            order_by(SearchRecord.time).all()
     session.close()
-    return records.all()
+    return records
 
 class Query:
     @check_ua
