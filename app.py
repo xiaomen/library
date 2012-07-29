@@ -13,6 +13,7 @@ from jinja2 import Environment, FileSystemLoader
 from functools import wraps
 from werkzeug.useragents import UserAgent
 from sqlalchemy.orm import scoped_session, sessionmaker
+from sqlalchemy.sql import func
 
 import hnulib
 import util
@@ -49,6 +50,8 @@ urls = (
     '/QueryDetail/(.*)', 'QueryDetail',
     '/QueryDetail', 'QueryDetail',
     '/current_user', 'UserSample',
+    '/hot_keys', 'HotKeySample',
+    '/api/keywords/(.*)', 'UserKeyword',
     '/.*', 'QueryPage',
 )
 
@@ -109,12 +112,30 @@ wsgi_app = SessionMiddleware(app.wsgifunc(), \
 
 def insert_search_record(uid, value):
     session = scoped_session(sessionmaker(bind=engine))
-    records = session.query(SearchRecord).filter_by(uid=uid).order_by(SearchRecord.time)
+    records = session.query(SearchRecord).filter_by(uid=uid).\
+            order_by(SearchRecord.time)
     if records.count() == 15:
         session.delete(records.first())
     session.add(SearchRecord(uid, value, datetime.now()))
     session.commit()
     session.close()
+
+def get_hot_keys(top):
+    session = scoped_session(sessionmaker(bind=engine))
+    records = session.query(SearchRecord.record, func.count('*').\
+            label('record_count')).\
+            group_by(SearchRecord.record).\
+            order_by('record_count desc')
+    count = session.query(SearchRecord).group_by(SearchRecord.record).count()
+    session.close()
+    return records[:min(top, count)]
+
+def get_keywords_by_uid(uid):
+    session = scoped_session(sessionmaker(bind=engine))
+    records = session.query(SearchRecord).filter_by(uid=uid).\
+            order_by(SearchRecord.time)
+    session.close()
+    return records.all()
 
 class Query:
     @check_ua
@@ -174,6 +195,16 @@ class UserSample:
         if not user:
             return 'No user in session'
         return '%s %s' % (user.get('name', ''), user.get('uid', 0))
+
+class HotKeySample:
+    def GET(self):
+        keys = get_hot_keys(5)
+        return '\n'.join(['{0} {1}'.format(k.record, k.record_count) for k in keys])
+
+class UserKeyword:
+    def GET(self, uid):
+        records = get_keywords_by_uid(int(uid))
+        return '\n'.join([r.record for r in records])
 
 class QueryPage:
     @check_ua

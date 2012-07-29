@@ -1,6 +1,7 @@
 import web
 import json
 import urllib2
+from sheep.api.open import rpc
 
 html_escape_table = {
     "&": "&amp;",
@@ -26,11 +27,11 @@ def int_ceil(a, b):
     return int((a + b - 1) / b)
 
 def get_user(uid):
-    url = 'http://open.xiaomen.co/api/people/' + str(uid)
-    req = urllib2.Request(url)
-    req.add_header('X-APP-NAME', 'account')
-    res = urllib2.urlopen(req, timeout=15)
-    return json.loads(res.read())
+    response_str = rpc('account', 'api/people/{0}'.format(uid))
+    user = json.loads(response_str)
+    if user.get('status', '') == 'ok':
+        return user
+    return None
 
 def get_current_uid():
     web_session = web.ctx.env['xiaomen.session']
