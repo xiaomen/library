@@ -1,0 +1,40 @@
+{% extends "mobile/layout.html" %}
+
+{% block content %}
+{% include "mobile/search-form.html" %}
+<div class="book">
+    <div class="book-detail-name"><h3>{{ book.name }}</h3></div>
+    <div class="book-info">
+        <table cellpadding="0" cellspacing="0">
+            <tr>
+                <td>索书号：&nbsp;&nbsp;{{ book.callno }}</td>
+            </tr>
+            <tr>
+                <td>著者：&nbsp;&nbsp;<a href="/Query?pageNo=1&val1={{ book.author }}">{{ book.author }}</a></td>
+            </tr>
+            <tr>
+                <td>出版社：&nbsp;&nbsp;<a href="/Query?pageNo=1&val1={{ book.publisher }}">{{ book.publisher }}</a></td>
+            </tr>
+            <tr>
+                <td>出版日期：&nbsp;&nbsp;{{ book.publish_date }}</td>
+            </tr>
+            <tr>
+                <td>ISBN：&nbsp;&nbsp;{{ book.isbn }}</td>
+            </tr>
+        </table>
+    </div>
+    <div class="result-title">
+        <h2>馆藏状态</h2>
+    </div>
+    <div class="result-body">
+        <ol class="book-status">
+            {% for detail in book.detail_list %}
+            <li>{{ detail['STATE'] | check_state }} / {{ detail['CURLOCAL'] }} {% if detail.has_key('RETURNDATE') %} / {{ detail['RETURNDATE'] }} {% endif %}</li>
+            {% endfor %}
+        </ol>
+    </div>
+    <div class="back-btn">
+        <a href="/Query?pageNo={{ pageNo }}&val1={{ val1 }}">返回结果列表</a>
+    </div>
+</div>
+{% endblock %}

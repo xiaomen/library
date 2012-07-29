@@ -72,6 +72,13 @@ def check_ua(method):
         return method(self, *args, **kwargs) 
     return wrapper
 
+def ismobile():
+    ua = UserAgent(web.ctx.env['HTTP_USER_AGENT'])
+    if ua.platform.lower() in ["android", "iphone"]:
+        return True
+    return False
+
+
 def get_page_nav(pages, now, query_val):
     now = now - 1
     dotdot = lambda a: "<li class=\"disabled\"><a href=\"#\">...</a></li>"
@@ -97,7 +104,15 @@ def get_page_nav(pages, now, query_val):
         result.append(button(pages - 1))
     return result
 
+def check_state(state):
+    if state == u'在馆':
+        return u'<span class="green-sign">在馆</span>'
+    elif state == u'借出':
+        return u'<span class="red-sign">借出</span>'
+    return u'<span class="green-sign">%s</span>' % state
+
 jinja_env.filters['get_page_nav'] = get_page_nav
+jinja_env.filters['check_state'] = check_state
 
 web.config.debug = False
 app = web.application(urls, globals())
@@ -139,11 +154,18 @@ class Query:
             query_result = hnulib.new_search_book(user_data)
             if len(keyword) * len(page_no) > 0:
                 return json.dumps(query_result)
-            return jinja_env.get_template('result.html').render(
-                query_result=query_result,
-                val1=urllib.quote(user_data['val1']), 
-                query_val=user_data['val1'].decode("utf-8"), 
-                pageNo=user_data['pageNo'])
+            if ismobile():
+                return jinja_env.get_template('mobile/result.html').render(
+                    query_result=query_result,
+                    val1=urllib.quote(user_data['val1']), 
+                    query_val=user_data['val1'].decode("utf-8"), 
+                    pageNo=user_data['pageNo'])
+            else:
+                return jinja_env.get_template('result.html').render(
+                    query_result=query_result,
+                    val1=urllib.quote(user_data['val1']), 
+                    query_val=user_data['val1'].decode("utf-8"), 
+                    pageNo=user_data['pageNo'])
         except:
             return jinja_env.get_template('500.html').render()
 
@@ -178,7 +200,10 @@ class UserSample:
 class QueryPage:
     @check_ua
     def GET(self):
-        return jinja_env.get_template('index.html').render()
+        if ismobile():
+            return jinja_env.get_template('mobile/index.html').render()
+        else:
+            return jinja_env.get_template('index.html').render()
 
 detail_params = {'cmdACT': 'detailmarc', 'xsl': 'listdetailmarc.xsl'}
 
@@ -196,11 +221,18 @@ class QueryDetail:
         for d in book['detail_list']:
             if d['STATE'] == u'在馆':
                 book['borrow_count'] = book['borrow_count'] + 1
-        return jinja_env.get_template('detail.html').render(
-                book=book,
-                pageNo=user_data['pageNo'],
-                query_val=user_data['val1'].decode("utf-8"), 
-                val1=urllib.quote(user_data['val1']))
+        if ismobile():
+            return jinja_env.get_template('mobile/detail.html').render(
+                    book=book,
+                    pageNo=user_data['pageNo'],
+                    query_val=user_data['val1'].decode("utf-8"), 
+                    val1=urllib.quote(user_data['val1']))
+        else:
+            return jinja_env.get_template('detail.html').render(
+                    book=book,
+                    pageNo=user_data['pageNo'],
+                    query_val=user_data['val1'].decode("utf-8"), 
+                    val1=urllib.quote(user_data['val1']))
 
 
 if __name__ == "__main__":
