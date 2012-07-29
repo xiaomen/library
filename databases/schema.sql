@@ -38,16 +38,6 @@ CREATE TABLE `search_records` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `search_records`
---
-
-LOCK TABLES `search_records` WRITE;
-/*!40000 ALTER TABLE `search_records` DISABLE KEYS */;
-INSERT INTO `search_records` VALUES (3,1,'三国','2012-07-13 00:10:18'),(4,1,'三国','2012-07-13 00:10:20'),(6,1,'三国','2012-07-13 00:10:36'),(7,1,'三国','2012-07-13 00:10:38'),(8,1,'三国','2012-07-13 00:10:39'),(9,1,'三国','2012-07-13 00:10:46'),(10,1,'三国','2012-07-13 00:10:48'),(11,1,'三国','2012-07-13 00:10:49'),(12,1,'三国','2012-07-13 00:10:50'),(13,1,'三国','2012-07-13 00:10:52'),(14,1,'三国','2012-07-13 00:10:58'),(15,1,'三国','2012-07-13 00:11:01'),(16,1,'三国','2012-07-13 00:11:08'),(17,1,'三国','2012-07-13 00:11:13'),(18,1,'韩寒','2012-07-13 00:14:31'),(19,2,'测试','2012-07-14 12:02:12');
-/*!40000 ALTER TABLE `search_records` ENABLE KEYS */;
-UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -58,4 +48,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2012-07-29 18:54:02
+-- Dump completed on 2012-07-29 19:09:50
