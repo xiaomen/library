@@ -2,6 +2,7 @@ application: library
 version: 1
 runtime: python
 debug: True 
+sentry_dsn: http://15f5368355c84c408c607926b05c18bd:4cb3901b294941c3a3520bb93652f4b1@deploy.xiaom.co:9000/4
 
 handlers:
 - url: /static/(.*)
