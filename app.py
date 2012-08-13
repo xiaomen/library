@@ -168,7 +168,7 @@ class Query:
             user_data['val1'] = keyword
             user_data['pageNo'] = page_no
 
-        uid = web.ctx.session.id
+        uid = web.ctx.user.uid
         if uid != None:
             insert_search_record(uid, user_data['val1'])
 
