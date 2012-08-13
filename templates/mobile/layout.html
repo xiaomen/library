@@ -13,17 +13,17 @@
 <div class="topbar">
     <div class="useraera">
         <ul class="nav">
-            {% if web.ctx.user %}
-            {% if web.ctx.user.domain %}
-            <li><a href="{{ generate_user_url(web.ctx.user.domain) }}">{{ web.ctx.user.name }}</a></li>
+            {% if ctx.user %}
+            {% if ctx.user.domain %}
+            <li><a href="{{ generate_user_url(ctx.user.domain) }}">{{ ctx.user.name }}</a></li>
             {% else %}
-            <li><a href="{{ generate_user_url(web.ctx.user.id) }}">{{ web.ctx.user.name }}</a></li>
+            <li><a href="{{ generate_user_url(ctx.user.id) }}">{{ ctx.user.name }}</a></li>
             {% endif %}
-            <li><a href="http://account.xiaomen.co/mail/">邮件{% if web.ctx.unread_mail_count() > 0 %}({{web.ctx.read_mail_count()}}){% endif %}</a></li>
-            <li><a href="http://account.xiaomen.co/account/logout">登出</a></li>
+			<li><a href="{{ generate_mail_url() }}">邮件</a>{% if ctx.unread_mail_count() > 0 %}({{ctx.read_mail_count()}}){% endif %}</a></li>
+			<li><a href="{{ generate_logout_url() }}">登出</a></li>
             {% else %}
-            <li><a href="http://account.xiaomen.co/account/login">登录</a></li>
-            <li><a href="http://account.xiaomen.co/account/register">注册</a></li>
+			<li><a href="{{ generate_login_url() }}">登录</a></li>
+			<li><a href="{{ generate_register_url() }}">注册</a></li>
             {% endif %}
         </ul>
     </div>
