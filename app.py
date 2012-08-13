@@ -8,6 +8,8 @@ import logging
 from datetime import datetime
 from sheep.api.statics import static_files
 from sheep.api.sessions import SessionMiddleware, FilesystemSessionStore
+from sheep.api.users import *
+
 from jinja2 import Environment, FileSystemLoader
 
 from functools import wraps
@@ -59,7 +61,11 @@ jinja_env = Environment(
     loader=FileSystemLoader(os.path.join(os.path.dirname(__file__),
                             'templates')),
     extensions=[])
-jinja_env.globals.update({})
+jinja_env.globals['generate_user_url'] = generate_user_url
+jinja_env.globals['generate_login_url'] = generate_login_url
+jinja_env.globals['generate_logout_url'] = generate_logout_url
+jinja_env.globals['generate_register_url'] = generate_register_url
+jinja_env.globals['generate_mail_url'] = generate_mail_url
 jinja_env.filters['s_files'] = static_files
 
 def check_ua(method):
@@ -162,7 +168,7 @@ class Query:
             user_data['val1'] = keyword
             user_data['pageNo'] = page_no
 
-        uid = util.get_current_uid()
+        uid = web.ctx.session.id
         if uid != None:
             insert_search_record(uid, user_data['val1'])
 
@@ -214,7 +220,7 @@ class Query:
 
 class UserSample:
     def GET(self):
-        user = util.get_current_user()
+        user = web.ctx.user
         if not user:
             return 'No user in session'
         return '%s %s' % (user.get('name', ''), user.get('uid', 0))
@@ -266,6 +272,16 @@ class QueryDetail:
                     query_val=user_data['val1'].decode("utf-8"), 
                     val1=urllib.quote(user_data['val1']))
 
+def before_request(handle):
+    web.ctx.session = web.ctx.env['xiaomen.session']
+    web.ctx.user = get_current_user(web.ctx.session)
+    if web.ctx.user:
+        web.ctx.unread_mail_count = lambda: get_unread_mail_count(web.ctx.user.uid)
+    jinja_env.globals['ctx'] = web.ctx
+
+    return handle()
+
+app.add_processor(before_request)
 
 if __name__ == "__main__":
     app.run()
