@@ -82,7 +82,10 @@ def check_ua(method):
     return wrapper
 
 def ismobile():
-    ua = UserAgent(web.ctx.env['HTTP_USER_AGENT'])
+    ua_string = web.ctx.env['HTTP_USER_AGENT']
+    if not ua_string:
+        return True
+    ua = UserAgent(ua_string)
     if ua.platform.lower() in ["android", "iphone"]:
         return True
     return False
