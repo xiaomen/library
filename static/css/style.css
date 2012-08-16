@@ -89,7 +89,7 @@
 
 .result-title {
     margin-top: 60px; 
-    background: url('/static/img/arrow.png') no-repeat left center; 
+    background: url('/library/static/img/arrow.png') no-repeat left center; 
 }
 
 .result-title h2 {
@@ -122,6 +122,8 @@
 .pagination li a {
     color: #3B99CD; 
     text-decoration: none; 
+    width: auto; 
+    height: auto; 
 }
 
 .book {
