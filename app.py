@@ -71,6 +71,8 @@ jinja_env.filters['s_files'] = static_files
 def check_ua(method):
     @wraps(method)
     def wrapper(self, *args, **kwargs):
+        if 'HTTP_USER_AGENT' not in web.ctx.env.keys():
+            return method(self, *args, **kwargs)
         ua = UserAgent(web.ctx.env['HTTP_USER_AGENT'])
         if ua.browser == 'msie':
             try:
@@ -82,10 +84,9 @@ def check_ua(method):
     return wrapper
 
 def ismobile():
-    ua_string = web.ctx.env['HTTP_USER_AGENT']
-    if not ua_string:
+    if 'HTTP_USER_AGENT' not in web.ctx.env.keys():
         return True
-    ua = UserAgent(ua_string)
+    ua = UserAgent(web.ctx.env['HTTP_USER_AGENT'])
     if ua.platform.lower() in ["android", "iphone"]:
         return True
     return False
