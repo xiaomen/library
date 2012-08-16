@@ -31,7 +31,6 @@
     text-align: center; 
     border-top: 2px solid #3999cc; 
     font-size: 12px; 
-    margin-bottom: 40px; 
 }
 
 .footer a {
@@ -128,12 +127,15 @@
     float: left;
     width: 120px;
     text-align: right;
-    margin-right: 40px;
 }
 
 .control-label label {
     font-size: 18px;
     vertical-align: top;
+}
+
+.control {
+    margin-left: 110px; 
 }
 
 .control input {
@@ -152,15 +154,12 @@
     font-size: 18px;
 }
 
-.submit-form button {
+.submit-form button, .submit-form a.btn {
     border: none; 
     outline: none; 
     padding: 0; 
     margin: 0; 
     background-color: transparent; 
-}
-
-.submit-form button {
     font-size: 16px; 
     text-decoration: none; 
     color: white; 
@@ -199,4 +198,61 @@ form legend {
     font-size: 24px; 
     margin-left: 30px; 
     font-weight: bold; 
+}
+
+.unread {
+    color: white; 
+}
+
+.control span {
+    line-height: 30px; 
+}
+
+.pagination-wrap {
+    text-align: center; 
+    margin: 20px 0; 
+}
+
+.pagination {
+    display: inline-block; 
+    *display: inline;
+    *zoom: 1;
+    margin: 0; 
+    padding: 0; 
+}
+
+.pagination li {
+    display: inline; 
+    margin: 0; 
+    padding: 0; 
+    list-style: none; 
+}
+
+.pagination li a {
+    color: #3B99CD; 
+    text-decoration: none; 
+    width: 20px; 
+    height: 20px; 
+    display: inline-block; 
+}
+
+.pagination li.disabled a {
+    color: #CCC; 
+}
+
+.pagination li.active a {
+    background: #3999cc; 
+    color: white; 
+}
+
+.pagination li:hover a {
+    text-decoration: underline; 
+} 
+
+.sep30 {
+    height: 30px; 
+}
+
+.emailat:after {
+    content:"@"; 
 }
