@@ -1,3 +1,4 @@
 *.pyc
 venv/
 dev.yaml
+syncdb_dumps.bak
