@@ -10,3 +10,4 @@ handlers:
 
 - url: /.*
   wsgi_app: app:wsgi_app
+
