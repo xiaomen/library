@@ -54,6 +54,7 @@ urls = (
     '/current_user', 'UserSample',
     '/hot_keys', 'HotKeySample',
     '/api/keywords/(.*)', 'UserKeyword',
+    '/api/hotkeys/(.*)', 'UserHotKey',
     '/.*', 'QueryPage',
 )
 
@@ -152,6 +153,18 @@ def get_hot_keys(top):
     session.close()
     return ret
 
+def get_hot_keys_by_uid(top, uid):
+    session = scoped_session(sessionmaker(bind=engine))
+    records = session.query(SearchRecord.record, func.count('*').\
+            label('record_count')).\
+            filter_by(uid=uid).\
+            group_by(SearchRecord.record).\
+            order_by('record_count desc')
+    count = session.query(SearchRecord).group_by(SearchRecord.record).count()
+    ret = records[:min(top, count)]
+    session.close()
+    return ret
+
 def get_keywords_by_uid(uid):
     session = scoped_session(sessionmaker(bind=engine))
     records = session.query(SearchRecord).filter_by(uid=uid).\
@@ -233,7 +246,12 @@ class HotKeySample:
 class UserKeyword:
     def GET(self, uid):
         records = get_keywords_by_uid(int(uid))
-        return '\n'.join([r.record for r in records])
+        return json.dumps([r.to_dict() for r in records])
+    
+class UserHotKey:
+    def GET(self, uid):
+        records = get_hot_keys_by_uid(10, int(uid))
+        return json.dumps([dict(record=r.record, count=r.record_count) for r in records])
 
 class QueryPage:
     @check_ua
