@@ -1,5 +1,35 @@
 {% extends "mobile/layout.html" %}
 
+{% block head %}
+<script src="{{ 'static/js/jquery-1.7.2.min.js' | s_files }}" type="text/javascript"></script>
+<script src="{{ 'static/js/jquery.text.fadeto.js' | s_files }}" type="text/javascript"></script>
+{% endblock %}
+
 {% block content %}
 {% include "mobile/search-form.html" %}
+<div class="hot-keys">
+    他们在搜：<a href="###" class="hotkey">{{ hotkeys[-1] }}</a>
+</div>
+<script type="text/javascript">
+function fadeHotKey(hotkeys) {
+    var fadeKey = $(".hotkey"); 
+    var length = hotkeys.length; 
+    var now = 0; 
+    function fadeNext() {
+        if(now >= length) {
+            now = now % length; 
+        }
+        fadeKey.fadeTo(hotkeys[now]); 
+        now = now + 1; 
+    }
+    setInterval(fadeNext, 2500); 
+}
+$(document).ready(function() {
+    fadeHotKey([{% for key in hotkeys %}{% if not loop.first %},{% endif %}"{{ key.replace("\"", "\\\"") }}"{% endfor %}]); 
+    $(".hotkey").click(function() {
+        var key = this.text; 
+        window.location.href = "/Query?pageNo=1&submit=&val1=" + key; 
+    }); 
+}); 
+</script>
 {% endblock %}

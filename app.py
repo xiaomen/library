@@ -263,8 +263,12 @@ class UserHotKey:
 class QueryPage:
     @check_ua
     def GET(self):
+        hotkeys = get_hot_keys(5)
+        hot = []
+        for keys in hotkeys:
+            hot.append(keys[0].decode('utf-8'))
         if ismobile():
-            return jinja_env.get_template('mobile/index.html').render()
+            return jinja_env.get_template('mobile/index.html').render(hotkeys = hot)
         else:
             return jinja_env.get_template('index.html').render()
 
