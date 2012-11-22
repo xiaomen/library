@@ -85,6 +85,7 @@ def check_ua(method):
     return wrapper
 
 def ismobile():
+    return True
     if 'HTTP_USER_AGENT' not in web.ctx.env.keys():
         return True
     ua = UserAgent(web.ctx.env['HTTP_USER_AGENT'])
@@ -284,6 +285,7 @@ class QueryDetail:
             if d['STATE'] == u'在馆':
                 book['borrow_count'] = book['borrow_count'] + 1
         if ismobile():
+            print book
             return jinja_env.get_template('mobile/detail.html').render(
                     book=book,
                     pageNo=user_data['pageNo'],
