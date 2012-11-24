@@ -133,3 +133,13 @@ a:visited {
 .back-btn {
     text-align: right; 
 }
+
+.hot-keys {
+    text-align: center; 
+    max-width: 200px; 
+    margin: 0 auto; 
+    margin-top: 20px; 
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}

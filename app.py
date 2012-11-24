@@ -85,6 +85,7 @@ def check_ua(method):
     return wrapper
 
 def ismobile():
+    return True
     if 'HTTP_USER_AGENT' not in web.ctx.env.keys():
         return True
     ua = UserAgent(web.ctx.env['HTTP_USER_AGENT'])
@@ -262,8 +263,12 @@ class UserHotKey:
 class QueryPage:
     @check_ua
     def GET(self):
+        hotkeys = get_hot_keys(5)
+        hot = []
+        for keys in hotkeys:
+            hot.append(keys[0].decode('utf-8'))
         if ismobile():
-            return jinja_env.get_template('mobile/index.html').render()
+            return jinja_env.get_template('mobile/index.html').render(hotkeys = hot)
         else:
             return jinja_env.get_template('index.html').render()
 
@@ -284,6 +289,7 @@ class QueryDetail:
             if d['STATE'] == u'在馆':
                 book['borrow_count'] = book['borrow_count'] + 1
         if ismobile():
+            print book
             return jinja_env.get_template('mobile/detail.html').render(
                     book=book,
                     pageNo=user_data['pageNo'],
