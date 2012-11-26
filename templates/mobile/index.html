@@ -1,8 +1,8 @@
 {% extends "mobile/layout.html" %}
 
 {% block head %}
-<script src="{{ 'static/js/jquery-1.7.2.min.js' | s_files }}" type="text/javascript"></script>
-<script src="{{ 'static/js/jquery.text.fadeto.js' | s_files }}" type="text/javascript"></script>
+<script src="{{ '/static/js/jquery-1.7.2.min.js' | s_files }}" type="text/javascript"></script>
+<script src="{{ '/static/js/jquery.text.fadeto.js' | s_files }}" type="text/javascript"></script>
 {% endblock %}
 
 {% block content %}
@@ -19,13 +19,13 @@ function fadeHotKey(hotkeys) {
         if(now >= length) {
             now = now % length; 
         }
-        fadeKey.fadeTo(hotkeys[now]); 
+        fadeKey.fadeTo($('<div/>').html(hotkeys[now]).text()); 
         now = now + 1; 
     }
     setInterval(fadeNext, 2500); 
 }
 $(document).ready(function() {
-    fadeHotKey([{% for key in hotkeys %}{% if not loop.first %},{% endif %}"{{ key.replace("\"", "\\\"") }}"{% endfor %}]); 
+    fadeHotKey([{% for key in hotkeys %}{% if not loop.first %},{% endif %}"{{ key.replace("\"", "\\\"") | e }}"{% endfor %}]); 
     $(".hotkey").click(function() {
         var key = this.text; 
         window.location.href = "/Query?pageNo=1&submit=&val1=" + key; 
