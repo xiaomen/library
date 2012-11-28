@@ -306,6 +306,7 @@ def before_request(handle):
     web.ctx.session = web.ctx.env['xiaomen.session']
     web.ctx.user = get_current_user(web.ctx.session)
     if web.ctx.user:
+        web.ctx.user.name = web.ctx.user.name.decode('utf-8')
         web.ctx.unread_mail_count = lambda: get_unread_mail_count(web.ctx.user.uid)
     jinja_env.globals['ctx'] = web.ctx
 
