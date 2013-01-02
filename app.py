@@ -121,10 +121,10 @@ def get_page_nav(pages, now, query_val):
 
 def check_state(state):
     if state == u'在馆':
-        return u'<span class="green-sign">在馆</span>'
+        return u'<span class="green">在馆</span>'
     elif state == u'借出':
-        return u'<span class="red-sign">借出</span>'
-    return u'<span class="green-sign">%s</span>' % state
+        return u'<span class="red">借出</span>'
+    return u'<span class="red">%s</span>' % state
 
 jinja_env.filters['get_page_nav'] = get_page_nav
 jinja_env.filters['check_state'] = check_state

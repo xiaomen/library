@@ -38,108 +38,23 @@
     font-size: 23px; 
 }
 
-.search-notice {
-    text-align: center; 
-    color: #666; 
-}
-
-.result-title {
-    text-align: center; 
-    padding: 5px 0; 
-    margin: 10px 0; 
-    color: #3999CC; 
-    border-top: 1px solid #3999CC; 
+.search-book {
     border-bottom: 1px solid #3999CC; 
+    padding: 5px 10px; 
 }
 
-.result-title h2 {
-    font-weight: normal; 
-    font-size: 16px; 
+.search-book .book-detail {
 }
 
-.sign {
-    float: right; 
-}
-
-.green-sign {
-    color: green; 
-}
-
-.red-sign {
-    color: red; 
-}
-
-.book-name {
-    display: inline; 
-}
-
-.book-list {
-    padding: 0; 
+.search-book .book-detail p {
     margin: 0; 
 }
 
-.search-book {
-    border-bottom: 1px solid #3999CC; 
+.result-title {
+    margin-bottom: 0; 
+}
+
+.book-status {
+    list-style-type: decimal; 
     list-style-position: inside; 
-    padding-bottom: 10px; 
-    margin-bottom: 10px; 
-}
-
-a {
-    color: #3999CC; 
-    text-decoration: none; 
-}
-
-a:visited {
-    color: #3999CC; 
-}
-
-.book-detail {
-    margin-left: 1.4em; 
-    margin-top: 0.5em; 
-}
-
-.pagination-wrap {
-    width: 100%; 
-}
-
-.pagination {
-    text-align: center; 
-}
-
-.pagination li {
-    display: inline; 
-    margin: 0 10px; 
-}
-
-.pagination a {
-    color: #3999CC; 
-    text-decoration: none; 
-}
-
-.book-detail-name {
-    text-align: center; 
-    width: 100%; 
-    padding: 5px 0; 
-    margin: 5px 0; 
-    color: #3999CC; 
-    border-top: 1px solid #3999CC; 
-}
-
-.book-info {
-    margin-left: 2em; 
-}
-
-.back-btn {
-    text-align: right; 
-}
-
-.hot-keys {
-    text-align: center; 
-    max-width: 200px; 
-    margin: 0 auto; 
-    margin-top: 20px; 
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
 }

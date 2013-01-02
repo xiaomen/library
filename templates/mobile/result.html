@@ -2,7 +2,7 @@
 
 {% block content %}
 {% include "mobile/search-form.html" %}
-<div class="result-title">
+<div class="title title-center result-title">
     <h2>结果列表</h2>
 </div>
 {% if query_result.book_list %}
@@ -10,9 +10,10 @@
     <ol class="book-list">
         {% for book in query_result.book_list %}
         <li class="search-book">
-            {% if book["BORROW"] %}<span class="sign green-sign">可　借</span>{% else %}<span class="sign red-sign">不可借</span>{% endif %}
-            <div class="book-name"><a href="/QueryDetail?pageNo={{ pageNo }}&val1={{ val1 }}&bookrecno={{ book['BOOKRECNO'] }}" class="book-title">{{ book['TITLE'] }}</a>&nbsp;&nbsp;&nbsp;索书号：{{ book.CALLNO }}</div>
+            {% if book["BORROW"] %}<span class="green r">可　借</span>{% else %}<span class="red r">不可借</span>{% endif %}
+            <div class="book-name"><a href="/QueryDetail?pageNo={{ pageNo }}&val1={{ val1 }}&bookrecno={{ book['BOOKRECNO'] }}" class="book-title">{{ book['TITLE'] }}</a></div>
             <div class="book-detail">
+                <p>索书号：{{ book.CALLNO }}</p>
                 <p>著者：<a href="/Query?pageNo=1&val1={{ book.AUTHOR }}">{{ book.AUTHOR }}</a></p>
                 <p>出版社：<a href="/Query?pageNo=1&val1={{ book.PUBLISHER }}">{{ book.PUBLISHER }}</a></p>
                 <p>出版日期：{{ book.PUBDATE }}</p>
@@ -22,7 +23,7 @@
     </ol>
 </div>
 <div class="pagination-wrap">
-    <ul class="pagination">
+    <ul class="pagination inline-center-list">
         {% if query_result.CURPAGE != 1 %}
         <li><a href="/Query?pageNo=1&val1={{ val1 }}">第一页</a></li>
         <li><a href="/Query?pageNo={{ query_result.CURPAGE - 1 }}&val1={{ val1 }}">上一页</a></li>
