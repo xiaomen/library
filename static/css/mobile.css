@@ -1,0 +1,60 @@
+.search {
+    padding: 0 30px; 
+}
+
+.search-wrap {
+    width: 100%; 
+    border: 1px solid #999; 
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    padding: 5px; 
+    margin: 30px 0; 
+}
+
+.search-icon {
+    float: right; 
+}
+
+.search-icon input {
+    outline: none; 
+    margin: 0; 
+    padding: 0; 
+    background: url('/library/static/img/search-btn.png') no-repeat center center; 
+    border: none; 
+    width: 28px; 
+    height: 28px; 
+}
+
+.search-input {
+    margin-right: 30px; 
+}
+
+.search-input input {
+    width: 100%; 
+    border: none; 
+    outline: none; 
+    line-height: 28px; 
+    font-size: 23px; 
+}
+
+.search-book {
+    border-bottom: 1px solid #3999CC; 
+    padding: 5px 10px; 
+}
+
+.search-book .book-detail {
+}
+
+.search-book .book-detail p {
+    margin: 0; 
+}
+
+.result-title {
+    margin-bottom: 0; 
+}
+
+.book-status {
+    list-style-type: decimal; 
+    list-style-position: inside; 
+}

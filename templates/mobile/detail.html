@@ -3,7 +3,7 @@
 {% block content %}
 {% include "mobile/search-form.html" %}
 <div class="book">
-    <div class="book-detail-name"><h3>{{ book.name }}</h3></div>
+    <div class="title title-center"><h2>{{ book.name }}</h3></div>
     <div class="book-info">
         <table cellpadding="0" cellspacing="0">
             <tr>
@@ -23,7 +23,7 @@
             </tr>
         </table>
     </div>
-    <div class="result-title">
+    <div class="title title-center">
         <h2>馆藏状态</h2>
     </div>
     <div class="result-body">
@@ -33,8 +33,8 @@
             {% endfor %}
         </ol>
     </div>
-    <div class="back-btn">
-        <a href="/Query?pageNo={{ pageNo }}&val1={{ val1 }}">返回结果列表</a>
+    <div class="back-btn clearfix">
+        <a class="btn r" href="/Query?pageNo={{ pageNo }}&val1={{ val1 }}">返回</a>
     </div>
 </div>
 {% endblock %}

@@ -12,19 +12,19 @@
 </head>
 <body>
 <div class="topbar">
-    <div class="useraera r">
-        <ul class="nav inline-list">
+    <div class="useraera">
+        <ul class="nav">
             {% if ctx.user %}
             {% if ctx.user.domain %}
             <li><a href="{{ generate_user_url(ctx.user.domain) }}">{{ ctx.user.name }}</a></li>
             {% else %}
             <li><a href="{{ generate_user_url(ctx.user.id) }}">{{ ctx.user.name }}</a></li>
             {% endif %}
-            <li><a href="{{ generate_mail_url() }}">邮件</a>{% if ctx.unread_mail_count() > 0 %}({{ctx.unread_mail_count()}}){% endif %}</a></li>
-            <li><a href="{{ generate_logout_url() }}">登出</a></li>
+			<li><a href="{{ generate_mail_url() }}">邮件</a>{% if ctx.unread_mail_count() > 0 %}({{ctx.unread_mail_count()}}){% endif %}</a></li>
+			<li><a href="{{ generate_logout_url() }}">登出</a></li>
             {% else %}
-            <li><a href="{{ generate_login_url() }}">登录</a></li>
-            <li><a href="{{ generate_register_url() }}">注册</a></li>
+			<li><a href="{{ generate_login_url() }}">登录</a></li>
+			<li><a href="{{ generate_register_url() }}">注册</a></li>
             {% endif %}
         </ul>
     </div>
@@ -32,19 +32,17 @@
         <ul class="nav">
             <li><a href="http://www.xiaomen.co/">首页</a></li>
 <!--            <li><a href="http://selfstudy.xiaomen.co/">自习室</a></li>
-<li><a href="http://library.xiaomen.co/">图书馆</a></li>-->
+                <li><a href="http://library.xiaomen.co/">图书馆</a></li>-->
         </ul>
     </div>
 </div>
 <div class="header">
     <div class="header-wrap">
-        <div class="subtitle r">
-            <h2>{% block subtitle %}图书馆{% endblock %}</h2>
+        <div class="subtitle">
+            <h2>图书馆</h2>
         </div>
         <div class="logo">
-            <a href="/">
-                <img src="{{ '/static/img/mobile.logo.png' | s_files }}" />
-            </a>
+            <img src="{{ '/static/img/mobile.logo.png' | s_files }}" />
         </div>
     </div>
 </div>
@@ -56,7 +54,7 @@
 <div class="footer">
     <div class="footer-wrap">
         <div class="footer-nav">
-            <ul class="inline-list nav">
+            <ul class="nav">
                 <li><a href="/report">反馈</a></li>
                 <li><a href="http://xiaomen.co/">xiaomen.co</a></li>
             </ul>
